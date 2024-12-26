@@ -1,0 +1,23 @@
+services:
+  web:
+    build: .
+    container_name: nextjs-docker
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+  postgres:
+    restart: always
+    image: postgres:latest
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+
+volumes:
+  pgdata:
