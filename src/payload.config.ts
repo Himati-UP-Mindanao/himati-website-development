@@ -7,6 +7,8 @@ import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
 
+import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
+
 // Uncomment this block to enable email sending
 // import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 // import nodemailer from "nodemailer";
@@ -47,7 +49,7 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString:
-        process.env.ENVIRONMENT === "development"
+        process.env.ENVIRONMENT === "cloud"
           ? process.env.DATABASE_URI
           : `postgres://postgres:${process.env.DATABASE_PASSWORD}@postgres:5432/postgres`,
     },
@@ -55,6 +57,12 @@ export default buildConfig({
   sharp,
   plugins: [
     payloadCloudPlugin(),
-    // storage-adapter-placeholder
+    vercelBlobStorage({
+      enabled: process.env.ENVIRONMENT === "cloud",
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      collections: {
+        media: true,
+      },
+    }),
   ],
 });
