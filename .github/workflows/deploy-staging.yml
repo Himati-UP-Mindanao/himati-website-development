@@ -10,6 +10,11 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v3
 
+      - name: change commit author
+        run: |
+          git config --global user.name "HimatiDev"
+          git config --global user.email "himati.upmin@up.edu.ph"
+
       - name: push to staging
         uses: peaceiris/actions-gh-pages@v3
         with:
