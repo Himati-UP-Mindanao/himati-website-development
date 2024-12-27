@@ -10,11 +10,6 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v3
 
-      - name: change commit author
-        run: |
-          git config --global user.name "HimatiDev"
-          git config --global user.email "himati.upmin@up.edu.ph"
-
       - name: push to staging
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -23,3 +18,5 @@ jobs:
           external_repository: HimatiDev/himati-website-development
           publish_branch: main
           allow_empty_commit: true
+          user_name: "HimatiDev"
+          user_email: "himati.upmin@up.edu.ph"
