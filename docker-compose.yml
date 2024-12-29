@@ -4,9 +4,6 @@ services:
     container_name: nextjs-docker
     ports:
       - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
     depends_on:
       - postgres
     env_file:

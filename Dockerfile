@@ -2,11 +2,13 @@ FROM node:22
 
 WORKDIR /app
 
-COPY package.json package-lock.json /app/
+COPY package.json package-lock.json ./
+
+RUN npm install cross-env
 
 RUN npm install --legacy-peer-deps
 
-COPY . /app
+COPY . .
 
 EXPOSE 3000
 

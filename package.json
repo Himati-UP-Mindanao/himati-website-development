@@ -3,10 +3,14 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "next dev",
-        "build": "next build",
-        "start": "next start",
-        "lint": "next lint"
+        "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+        "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+        "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
+        "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+        "generate:types": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types",
+        "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
+        "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+        "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
     },
     "dependencies": {
         "@payloadcms/db-postgres": "^3.11.0",
@@ -14,6 +18,7 @@
         "@payloadcms/next": "^3.11.0",
         "@payloadcms/payload-cloud": "^3.11.0",
         "@payloadcms/richtext-lexical": "^3.11.0",
+        "@payloadcms/richtext-slate": "^3.11.0",
         "@payloadcms/storage-vercel-blob": "^3.11.0",
         "graphql": "^16.10.0",
         "next": "15.1.2",
@@ -32,5 +37,6 @@
         "postcss": "^8",
         "tailwindcss": "^3.4.1",
         "typescript": "^5"
-    }
+    },
+    "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321"
 }
