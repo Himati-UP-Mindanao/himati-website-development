@@ -25,14 +25,14 @@ export const HimatiStaff: CollectionConfig = {
     {
       name: "id",
       type: "text",
+      admin: {
+        condition: () => false,
+      },
       access: {
         update: () => false,
       },
       hooks: {
         beforeValidate: [() => uuidv4()],
-      },
-      admin: {
-        condition: () => false,
       },
     },
     {
@@ -53,6 +53,7 @@ export const HimatiStaff: CollectionConfig = {
     {
       name: "role",
       type: "select",
+      required: true,
       saveToJWT: true,
       hasMany: true,
       access: {
@@ -60,16 +61,20 @@ export const HimatiStaff: CollectionConfig = {
       },
       options: [
         {
+          label: "Super Admin",
+          value: "super-admin",
+        },
+        {
           label: "Admin",
           value: "admin",
         },
         {
-          label: "Assistant Admin",
-          value: "assistant-admin",
-        },
-        {
           label: "Writer",
           value: "writer",
+        },
+        {
+          label: "Editor",
+          value: "editor",
         },
       ],
     },

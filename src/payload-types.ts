@@ -8,17 +8,23 @@
 
 export interface Config {
   auth: {
-    users: UserAuthOperations;
+    'himati-staff': HimatiStaffAuthOperations;
   };
   collections: {
-    users: User;
+    'himati-staff': HimatiStaff;
+    articles: Article;
+    'featured-photo': FeaturedPhoto;
+    'profile-photo': ProfilePhoto;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    'himati-staff': HimatiStaffSelect<false> | HimatiStaffSelect<true>;
+    articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    'featured-photo': FeaturedPhotoSelect<false> | FeaturedPhotoSelect<true>;
+    'profile-photo': ProfilePhotoSelect<false> | ProfilePhotoSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -29,15 +35,15 @@ export interface Config {
   globals: {};
   globalsSelect: {};
   locale: null;
-  user: User & {
-    collection: 'users';
+  user: HimatiStaff & {
+    collection: 'himati-staff';
   };
   jobs: {
     tasks: unknown;
     workflows: unknown;
   };
 }
-export interface UserAuthOperations {
+export interface HimatiStaffAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -57,10 +63,29 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "himati-staff".
  */
-export interface User {
-  id: number;
+export interface HimatiStaff {
+  id?: string | null;
+  'first-name': string;
+  'last-name': string;
+  role: ('super-admin' | 'admin' | 'writer' | 'editor')[];
+  bio?: string | null;
+  position?:
+    | (
+        | 'editor-in-chief'
+        | 'associate-editor'
+        | 'managing-editor'
+        | 'news-editor'
+        | 'opinion-editor'
+        | 'features-editor'
+        | 'sports-editor'
+        | 'layout-writer'
+        | 'staff-writer'
+      )
+    | null;
+  bionote?: string | null;
+  photo?: (string | null) | ProfilePhoto;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -74,18 +99,83 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profile-photo".
+ */
+export interface ProfilePhoto {
+  id?: string | null;
+  author: string | HimatiStaff;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id?: string | null;
+  title: string;
+  author: string | HimatiStaff;
+  category: 'news' | 'features' | 'kultura' | 'opinion';
+  content: {
+    [k: string]: unknown;
+  }[];
+  'top-article'?: boolean | null;
+  'include-featured-photo'?: boolean | null;
+  photo?: (string | null) | FeaturedPhoto;
+  tags?: ('politics' | 'tech' | 'entertainment' | 'sports')[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "featured-photo".
+ */
+export interface FeaturedPhoto {
+  id?: string | null;
+  author: string | HimatiStaff;
+  'taken-by': string | HimatiStaff;
+  cutline?: string | null;
+  'alt-text'?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
   id: number;
-  document?: {
-    relationTo: 'users';
-    value: number | User;
-  } | null;
+  document?:
+    | ({
+        relationTo: 'himati-staff';
+        value: string | HimatiStaff;
+      } | null)
+    | ({
+        relationTo: 'articles';
+        value: string | Article;
+      } | null)
+    | ({
+        relationTo: 'featured-photo';
+        value: string | FeaturedPhoto;
+      } | null)
+    | ({
+        relationTo: 'profile-photo';
+        value: string | ProfilePhoto;
+      } | null);
   globalSlug?: string | null;
   user: {
-    relationTo: 'users';
-    value: number | User;
+    relationTo: 'himati-staff';
+    value: string | HimatiStaff;
   };
   updatedAt: string;
   createdAt: string;
@@ -97,8 +187,8 @@ export interface PayloadLockedDocument {
 export interface PayloadPreference {
   id: number;
   user: {
-    relationTo: 'users';
-    value: number | User;
+    relationTo: 'himati-staff';
+    value: string | HimatiStaff;
   };
   key?: string | null;
   value?:
@@ -126,9 +216,17 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "himati-staff_select".
  */
-export interface UsersSelect<T extends boolean = true> {
+export interface HimatiStaffSelect<T extends boolean = true> {
+  id?: T;
+  'first-name'?: T;
+  'last-name'?: T;
+  role?: T;
+  bio?: T;
+  position?: T;
+  bionote?: T;
+  photo?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -138,6 +236,56 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles_select".
+ */
+export interface ArticlesSelect<T extends boolean = true> {
+  id?: T;
+  title?: T;
+  author?: T;
+  category?: T;
+  content?: T;
+  'top-article'?: T;
+  'include-featured-photo'?: T;
+  photo?: T;
+  tags?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "featured-photo_select".
+ */
+export interface FeaturedPhotoSelect<T extends boolean = true> {
+  id?: T;
+  author?: T;
+  'taken-by'?: T;
+  cutline?: T;
+  'alt-text'?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profile-photo_select".
+ */
+export interface ProfilePhotoSelect<T extends boolean = true> {
+  id?: T;
+  author?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
