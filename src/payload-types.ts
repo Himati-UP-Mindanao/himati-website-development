@@ -70,9 +70,9 @@ export interface HimatiStaff {
   'first-name': string;
   'last-name': string;
   role: ('super-admin' | 'admin' | 'writer' | 'editor')[];
-  bio?: string | null;
   position?:
     | (
+        | 'not-applicable'
         | 'editor-in-chief'
         | 'associate-editor'
         | 'managing-editor'
@@ -103,9 +103,19 @@ export interface HimatiStaff {
  */
 export interface ProfilePhoto {
   id?: string | null;
+  title?: string | null;
   author: string | HimatiStaff;
   updatedAt: string;
   createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -223,7 +233,6 @@ export interface HimatiStaffSelect<T extends boolean = true> {
   'first-name'?: T;
   'last-name'?: T;
   role?: T;
-  bio?: T;
   position?: T;
   bionote?: T;
   photo?: T;
@@ -283,9 +292,19 @@ export interface FeaturedPhotoSelect<T extends boolean = true> {
  */
 export interface ProfilePhotoSelect<T extends boolean = true> {
   id?: T;
+  title?: T;
   author?: T;
   updatedAt?: T;
   createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

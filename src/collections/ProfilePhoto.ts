@@ -1,11 +1,15 @@
+import { adminOrSelf } from "@/access/adminOrSelf";
+import { equal } from "assert";
+import { select } from "node_modules/payload/dist/fields/validations";
 import type { CollectionConfig, Field } from "payload";
 import { v4 as uuidv4 } from "uuid";
 
 const ProfilePhoto: CollectionConfig = {
   slug: "profile-photo",
   admin: {
-    useAsTitle: "id",
+    useAsTitle: "title",
   },
+  upload: true,
   access: {
     create: () => true,
     // read: isPublished,
@@ -28,15 +32,40 @@ const ProfilePhoto: CollectionConfig = {
       },
     },
     {
+      name: "title",
+      type: "text",
+      access: {
+        create: () => false,
+        update: () => false,
+      },
+      admin: {
+        position: "sidebar",
+      },
+      hooks: {
+        beforeChange: [
+          async ({ data, req }) => {
+            if (data && data.author) {
+              const name = await req.payload.findByID({
+                collection: "himati-staff",
+                id: data.author,
+                })
+
+              return `${name["first-name"]} ${name["last-name"]}'s Profile Photo`;
+            }
+          },
+          ],
+        },
+      },
+      {
       name: "author",
-      label: "Entry Uploaded By",
+      label: "Profile Picture For",
       type: "relationship",
       relationTo: "himati-staff",
       required: true,
       defaultValue: ({ user }) => user!.id,
       access: {
-        create: () => true,
-        update: () => true,
+        create: adminOrSelf,
+        update: adminOrSelf,
       },
     },
   ] as Field[],

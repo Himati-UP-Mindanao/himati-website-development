@@ -1,5 +1,8 @@
-import type { CollectionConfig, Field } from "payload";
+import type { CollectionConfig, Field, CollectionBeforeOperationHook } from "payload";
 import { v4 as uuidv4 } from "uuid";
+
+import { admin, superAdmin } from "@/access/admin";
+import { adminOrSelf } from "@/access/adminOrSelf";
 
 export const HimatiStaff: CollectionConfig = {
   slug: "himati-staff",
@@ -8,19 +11,11 @@ export const HimatiStaff: CollectionConfig = {
     useAsTitle: "email",
   },
   access: {
-    create: () => true,
-    read: () => true,
-    update: () => true,
-    delete: () => true,
+    create: ({req}) => admin({req}) || superAdmin({req}),
+    read: adminOrSelf,
+    update: adminOrSelf,
+    delete: superAdmin,
   },
-  // hooks: {
-  //   afterChange: [
-  //     async ({ doc, req, previousDoc, operation }) => {
-  //       if (operation === "create") {
-  //       }
-  //     },
-  //   ],
-  // },
   fields: [
     {
       name: "id",
@@ -42,96 +37,109 @@ export const HimatiStaff: CollectionConfig = {
           name: "first-name",
           type: "text",
           required: true,
+          access: {
+            create: ({req}) => admin({req}) || superAdmin({req}),
+            update: ({req}) => admin({req}) || superAdmin({req}),
+          }
         },
         {
           name: "last-name",
           type: "text",
           required: true,
+          access: {
+            create: ({req}) => admin({req}) || superAdmin({req}),
+            update: ({req}) => admin({req}) || superAdmin({req}),
+          }
         },
       ],
     },
     {
-      name: "role",
-      type: "select",
-      required: true,
-      saveToJWT: true,
-      hasMany: true,
-      access: {
-        create: () => true,
-      },
-      options: [
+      type: "row",
+      fields: [
         {
-          label: "Super Admin",
-          value: "super-admin",
-        },
-        {
-          label: "Admin",
-          value: "admin",
-        },
-        {
-          label: "Writer",
-          value: "writer",
-        },
-        {
-          label: "Editor",
-          value: "editor",
-        },
-      ],
-    },
-    {
-      name: "bio",
-      type: "textarea",
-      admin: {
-        condition: (data) => {
-          return data.role === "writer";
-        },
-      },
-    },
-    {
-      name: "position",
-      type: "radio",
-      access: {
-        create: () => true,
-        update: () => true,
-      },
-      options: [
-        {
-          label: "Editor-in-Chief",
-          value: "editor-in-chief",
+          name: "role",
+          type: "select",
+          required: true,
+          saveToJWT: true,
+          hasMany: true,
+          access: {
+            create: ({req}) => admin({req}) || superAdmin({req}),
+            update: ({req}) => admin({req}) || superAdmin({req}),
+          },
+          options: [
+            {
+              label: "Super Admin",
+              value: "super-admin",
+            },
+            {
+              label: "Admin",
+              value: "admin",
+            },
+            {
+              label: "Writer",
+              value: "writer",
+            },
+            {
+              label: "Editor",
+              value: "editor",
+            },
+          ],
         },
         {
-          label: "Associate Editor",
-          value: "associate-editor",
+          name: "position",
+          type: "radio",
+          access: {
+            create: ({req}) => admin({req}) || superAdmin({req}),
+            update: ({req}) => admin({req}) || superAdmin({req}),
+          },
+          admin: {
+            layout: "vertical",
+          },
+          options: [
+            {
+              label: "Not Applicable (N/A)",
+              value: "not-applicable",
+              default: true,
+            },
+            {
+              label: "Editor-in-Chief",
+              value: "editor-in-chief",
+            },
+            {
+              label: "Associate Editor",
+              value: "associate-editor",
+            },
+            {
+              label: "Managing Editor",
+              value: "managing-editor",
+            },
+            {
+              label: "News Editor",
+              value: "news-editor",
+            },
+            {
+              label: "Opinion Editor",
+              value: "opinion-editor",
+            },
+            {
+              label: "Features Editor",
+              value: "features-editor",
+            },
+            {
+              label: "Sports Editor",
+              value: "sports-editor",
+            },
+            {
+              label: "Layout Writer",
+              value: "layout-writer",
+            },
+            {
+              label: "Staff Writer",
+              value: "staff-writer",
+            },
+          ],
         },
-        {
-          label: "Managing Editor",
-          value: "managing-editor",
-        },
-        {
-          label: "News Editor",
-          value: "news-editor",
-        },
-        {
-          label: "Opinion Editor",
-          value: "opinion-editor",
-        },
-        {
-          label: "Features Editor",
-          value: "features-editor",
-        },
-        {
-          label: "Sports Editor",
-          value: "sports-editor",
-        },
-        {
-          label: "Layout Writer",
-          value: "layout-writer",
-        },
-        {
-          label: "Staff Writer",
-          value: "staff-writer",
-        },
-      ],
+      ]
     },
     {
       label: "Bionote",
