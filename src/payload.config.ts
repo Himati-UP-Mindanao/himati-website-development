@@ -7,24 +7,30 @@ import { fileURLToPath } from 'url'
 import { slateEditor } from '@payloadcms/richtext-slate'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 
-import { HimatiStaff } from './collections/HimatiStaff'
+import { HimatiUsers } from './collections/HimatiUsers'
 import Articles from './collections/Articles'
 import FeaturedPhoto from './collections/FeaturedPhoto'
 import ProfilePhoto from './collections/ProfilePhoto'
 
 import { getServerSideURL } from './utilities/getURL'
 
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import nodemailer from 'nodemailer'
+
+import { HimatiPosition } from './globals/HimatiPosition'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
-    user: HimatiStaff.slug,
+    user: HimatiUsers.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [HimatiStaff, Articles, FeaturedPhoto, ProfilePhoto],
+  collections: [HimatiUsers, Articles, FeaturedPhoto, ProfilePhoto],
+  globals: [HimatiPosition],
   editor: slateEditor({}),
   db: postgresAdapter({
     pool: {
@@ -32,20 +38,17 @@ export default buildConfig({
     },
   }),
   cors: [getServerSideURL()].filter(Boolean),
-
-  // Uncomment this block to enable email sending
-  // email: nodemailerAdapter({
-  //   defaultFromAddress: "himati.upmin@up.edu.ph",
-  //   defaultFromName: "Himati UPMin CMS",
-  //   transport: nodemailer.createTransport({
-  //     service: "gmail",
-  //     auth: {
-  //       user: process.env.SMTP_USER,
-  //       pass: process.env.SMTP_PASS,
-  //     },
-  //   }),
-  // }),
-
+  email: nodemailerAdapter({
+    defaultFromAddress: "himati.upmin@up.edu.ph",
+    defaultFromName: "Himati UPMin CMS",
+    transport: nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    }),
+  }),
   plugins: [
     vercelBlobStorage({
       enabled: process.env.ENVIRONMENT === "cloud",

@@ -8,10 +8,10 @@
 
 export interface Config {
   auth: {
-    'himati-staff': HimatiStaffAuthOperations;
+    'himati-users': HimatiUserAuthOperations;
   };
   collections: {
-    'himati-staff': HimatiStaff;
+    'himati-users': HimatiUser;
     articles: Article;
     'featured-photo': FeaturedPhoto;
     'profile-photo': ProfilePhoto;
@@ -21,7 +21,7 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    'himati-staff': HimatiStaffSelect<false> | HimatiStaffSelect<true>;
+    'himati-users': HimatiUsersSelect<false> | HimatiUsersSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     'featured-photo': FeaturedPhotoSelect<false> | FeaturedPhotoSelect<true>;
     'profile-photo': ProfilePhotoSelect<false> | ProfilePhotoSelect<true>;
@@ -32,18 +32,22 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'himati-position': HimatiPosition;
+  };
+  globalsSelect: {
+    'himati-position': HimatiPositionSelect<false> | HimatiPositionSelect<true>;
+  };
   locale: null;
-  user: HimatiStaff & {
-    collection: 'himati-staff';
+  user: HimatiUser & {
+    collection: 'himati-users';
   };
   jobs: {
     tasks: unknown;
     workflows: unknown;
   };
 }
-export interface HimatiStaffAuthOperations {
+export interface HimatiUserAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -63,9 +67,9 @@ export interface HimatiStaffAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "himati-staff".
+ * via the `definition` "himati-users".
  */
-export interface HimatiStaff {
+export interface HimatiUser {
   id?: string | null;
   'first-name': string;
   'last-name': string;
@@ -104,7 +108,7 @@ export interface HimatiStaff {
 export interface ProfilePhoto {
   id?: string | null;
   title?: string | null;
-  author: string | HimatiStaff;
+  author: string | HimatiUser;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -124,7 +128,7 @@ export interface ProfilePhoto {
 export interface Article {
   id?: string | null;
   title: string;
-  author: string | HimatiStaff;
+  author: string | HimatiUser;
   category: 'news' | 'features' | 'kultura' | 'opinion';
   content: {
     [k: string]: unknown;
@@ -143,8 +147,8 @@ export interface Article {
  */
 export interface FeaturedPhoto {
   id?: string | null;
-  author: string | HimatiStaff;
-  'taken-by': string | HimatiStaff;
+  author: string | HimatiUser;
+  'taken-by': string | HimatiUser;
   cutline?: string | null;
   'alt-text'?: string | null;
   updatedAt: string;
@@ -167,8 +171,8 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'himati-staff';
-        value: string | HimatiStaff;
+        relationTo: 'himati-users';
+        value: string | HimatiUser;
       } | null)
     | ({
         relationTo: 'articles';
@@ -184,8 +188,8 @@ export interface PayloadLockedDocument {
       } | null);
   globalSlug?: string | null;
   user: {
-    relationTo: 'himati-staff';
-    value: string | HimatiStaff;
+    relationTo: 'himati-users';
+    value: string | HimatiUser;
   };
   updatedAt: string;
   createdAt: string;
@@ -197,8 +201,8 @@ export interface PayloadLockedDocument {
 export interface PayloadPreference {
   id: number;
   user: {
-    relationTo: 'himati-staff';
-    value: string | HimatiStaff;
+    relationTo: 'himati-users';
+    value: string | HimatiUser;
   };
   key?: string | null;
   value?:
@@ -226,9 +230,9 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "himati-staff_select".
+ * via the `definition` "himati-users_select".
  */
-export interface HimatiStaffSelect<T extends boolean = true> {
+export interface HimatiUsersSelect<T extends boolean = true> {
   id?: T;
   'first-name'?: T;
   'last-name'?: T;
@@ -337,6 +341,36 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "himati-position".
+ */
+export interface HimatiPosition {
+  id: number;
+  item?:
+    | {
+        position?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "himati-position_select".
+ */
+export interface HimatiPositionSelect<T extends boolean = true> {
+  item?:
+    | T
+    | {
+        position?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

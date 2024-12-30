@@ -31,7 +31,7 @@ const FeaturedPhoto: CollectionConfig = {
       name: "author",
       label: "Entry Created By",
       type: "relationship",
-      relationTo: "himati-staff",
+      relationTo: "himati-users",
       required: true,
       defaultValue: ({ user }) => user!.id,
       access: {
@@ -43,7 +43,7 @@ const FeaturedPhoto: CollectionConfig = {
       name: "taken-by",
       label: "Taken By",
       type: "relationship",
-      relationTo: "himati-staff",
+      relationTo: "himati-users",
       required: true,
     },
     {

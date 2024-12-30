@@ -46,7 +46,7 @@ const ProfilePhoto: CollectionConfig = {
           async ({ data, req }) => {
             if (data && data.author) {
               const name = await req.payload.findByID({
-                collection: "himati-staff",
+                collection: "himati-users",
                 id: data.author,
                 })
 
@@ -60,7 +60,7 @@ const ProfilePhoto: CollectionConfig = {
       name: "author",
       label: "Profile Picture For",
       type: "relationship",
-      relationTo: "himati-staff",
+      relationTo: "himati-users",
       required: true,
       defaultValue: ({ user }) => user!.id,
       access: {

@@ -40,7 +40,7 @@ const Articles: CollectionConfig = {
       name: "author",
       label: "Author",
       type: "relationship",
-      relationTo: "himati-staff",
+      relationTo: "himati-users",
       required: true,
       defaultValue: ({ user }) => user!.id,
       access: {
@@ -104,7 +104,7 @@ const Articles: CollectionConfig = {
       defaultValue: false,
       admin: {
         condition: (data, siblingData, { user }) => {
-          return user!.role === "admin";
+          return user!.role.includes("super-admin");
         },
       },
     },

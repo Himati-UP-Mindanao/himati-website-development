@@ -1,11 +1,13 @@
-import type { CollectionConfig, Field, CollectionBeforeOperationHook } from "payload";
+import type { CollectionConfig, Field } from "payload";
 import { v4 as uuidv4 } from "uuid";
 
 import { admin, superAdmin } from "@/access/admin";
 import { adminOrSelf } from "@/access/adminOrSelf";
 
-export const HimatiStaff: CollectionConfig = {
-  slug: "himati-staff",
+import { sendWelcomeEmail } from "@/utilities/sendWelcomeEmail";
+
+export const HimatiUsers: CollectionConfig = {
+  slug: "himati-users",
   auth: true,
   admin: {
     useAsTitle: "email",
@@ -15,6 +17,11 @@ export const HimatiStaff: CollectionConfig = {
     read: adminOrSelf,
     update: adminOrSelf,
     delete: superAdmin,
+  },
+  hooks: {
+    afterChange: [
+      sendWelcomeEmail,
+    ]
   },
   fields: [
     {
@@ -150,9 +157,8 @@ export const HimatiStaff: CollectionConfig = {
       name: "photo",
       type: "upload",
       relationTo: "profile-photo",
-      // required: true,
     },
   ] as Field[],
 };
 
-export default HimatiStaff;
+export default HimatiUsers;
