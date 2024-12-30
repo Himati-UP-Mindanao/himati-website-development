@@ -15,6 +15,7 @@ export interface Config {
     articles: Article;
     'featured-photo': FeaturedPhoto;
     'profile-photo': ProfilePhoto;
+    pages: Page;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -25,6 +26,7 @@ export interface Config {
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     'featured-photo': FeaturedPhotoSelect<false> | FeaturedPhotoSelect<true>;
     'profile-photo': ProfilePhotoSelect<false> | ProfilePhotoSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -74,22 +76,21 @@ export interface HimatiUser {
   'first-name': string;
   'last-name': string;
   role: ('super-admin' | 'admin' | 'writer' | 'editor')[];
-  position?:
-    | (
-        | 'not-applicable'
-        | 'editor-in-chief'
-        | 'associate-editor'
-        | 'managing-editor'
-        | 'news-editor'
-        | 'opinion-editor'
-        | 'features-editor'
-        | 'sports-editor'
-        | 'layout-writer'
-        | 'staff-writer'
-      )
-    | null;
-  bionote?: string | null;
-  photo?: (string | null) | ProfilePhoto;
+  position:
+    | 'not-applicable'
+    | 'editor-in-chief'
+    | 'associate-editor'
+    | 'managing-editor-internals'
+    | 'managing-editor-externals'
+    | 'circulations-editor'
+    | 'finance-officer'
+    | 'news-editor'
+    | 'opinion-editor'
+    | 'features-editor'
+    | 'culture-editor'
+    | 'multimedia-manager'
+    | 'asst-multimedia-manager'
+    | 'web-manager';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -103,26 +104,6 @@ export interface HimatiUser {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "profile-photo".
- */
-export interface ProfilePhoto {
-  id?: string | null;
-  title?: string | null;
-  author: string | HimatiUser;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "articles".
  */
 export interface Article {
@@ -133,7 +114,6 @@ export interface Article {
   content: {
     [k: string]: unknown;
   }[];
-  'top-article'?: boolean | null;
   'include-featured-photo'?: boolean | null;
   photo?: (string | null) | FeaturedPhoto;
   tags?: ('politics' | 'tech' | 'entertainment' | 'sports')[] | null;
@@ -165,6 +145,66 @@ export interface FeaturedPhoto {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profile-photo".
+ */
+export interface ProfilePhoto {
+  id?: string | null;
+  title?: string | null;
+  author: string | HimatiUser;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  'page-name'?: string | null;
+  layout?:
+    | (
+        | {
+            title: {
+              [k: string]: unknown;
+            }[];
+            paragraph: {
+              [k: string]: unknown;
+            }[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'title-paragraph-pair';
+          }
+        | {
+            title?: string | null;
+            blurb?: string | null;
+            members?:
+              | {
+                  'member-info': string | HimatiUser;
+                  'degree-program'?: string | null;
+                  'member-image': string | ProfilePhoto;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'editorial-board';
+          }
+      )[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -185,6 +225,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'profile-photo';
         value: string | ProfilePhoto;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -238,8 +282,6 @@ export interface HimatiUsersSelect<T extends boolean = true> {
   'last-name'?: T;
   role?: T;
   position?: T;
-  bionote?: T;
-  photo?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -260,7 +302,6 @@ export interface ArticlesSelect<T extends boolean = true> {
   author?: T;
   category?: T;
   content?: T;
-  'top-article'?: T;
   'include-featured-photo'?: T;
   photo?: T;
   tags?: T;
@@ -309,6 +350,43 @@ export interface ProfilePhotoSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  'page-name'?: T;
+  layout?:
+    | T
+    | {
+        'title-paragraph-pair'?:
+          | T
+          | {
+              title?: T;
+              paragraph?: T;
+              id?: T;
+              blockName?: T;
+            };
+        'editorial-board'?:
+          | T
+          | {
+              title?: T;
+              blurb?: T;
+              members?:
+                | T
+                | {
+                    'member-info'?: T;
+                    'degree-program'?: T;
+                    'member-image'?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

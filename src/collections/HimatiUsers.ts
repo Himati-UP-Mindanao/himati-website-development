@@ -5,6 +5,7 @@ import { admin, superAdmin } from "@/access/admin";
 import { adminOrSelf } from "@/access/adminOrSelf";
 
 import { sendWelcomeEmail } from "@/utilities/sendWelcomeEmail";
+import { HimatiPositions } from "@/constants/HimatiPositions";
 
 export const HimatiUsers: CollectionConfig = {
   slug: "himati-users",
@@ -21,7 +22,7 @@ export const HimatiUsers: CollectionConfig = {
   hooks: {
     afterChange: [
       sendWelcomeEmail,
-    ]
+    ],
   },
   fields: [
     {
@@ -61,103 +62,40 @@ export const HimatiUsers: CollectionConfig = {
       ],
     },
     {
-      type: "row",
-      fields: [
+      name: "role",
+      type: "select",
+      required: true,
+      saveToJWT: true,
+      hasMany: true,
+      access: {
+        create: ({req}) => admin({req}) || superAdmin({req}),
+        update: ({req}) => admin({req}) || superAdmin({req}),
+      },
+      options: [
         {
-          name: "role",
-          type: "select",
-          required: true,
-          saveToJWT: true,
-          hasMany: true,
-          access: {
-            create: ({req}) => admin({req}) || superAdmin({req}),
-            update: ({req}) => admin({req}) || superAdmin({req}),
-          },
-          options: [
-            {
-              label: "Super Admin",
-              value: "super-admin",
-            },
-            {
-              label: "Admin",
-              value: "admin",
-            },
-            {
-              label: "Writer",
-              value: "writer",
-            },
-            {
-              label: "Editor",
-              value: "editor",
-            },
-          ],
+          label: "Super Admin",
+          value: "super-admin",
         },
         {
-          name: "position",
-          type: "radio",
-          access: {
-            create: ({req}) => admin({req}) || superAdmin({req}),
-            update: ({req}) => admin({req}) || superAdmin({req}),
-          },
-          admin: {
-            layout: "vertical",
-          },
-          options: [
-            {
-              label: "Not Applicable (N/A)",
-              value: "not-applicable",
-              default: true,
-            },
-            {
-              label: "Editor-in-Chief",
-              value: "editor-in-chief",
-            },
-            {
-              label: "Associate Editor",
-              value: "associate-editor",
-            },
-            {
-              label: "Managing Editor",
-              value: "managing-editor",
-            },
-            {
-              label: "News Editor",
-              value: "news-editor",
-            },
-            {
-              label: "Opinion Editor",
-              value: "opinion-editor",
-            },
-            {
-              label: "Features Editor",
-              value: "features-editor",
-            },
-            {
-              label: "Sports Editor",
-              value: "sports-editor",
-            },
-            {
-              label: "Layout Writer",
-              value: "layout-writer",
-            },
-            {
-              label: "Staff Writer",
-              value: "staff-writer",
-            },
-          ],
+          label: "Admin",
+          value: "admin",
         },
-      ]
+        {
+          label: "Writer",
+          value: "writer",
+        },
+        {
+          label: "Editor",
+          value: "editor",
+        },
+      ],
     },
     {
-      label: "Bionote",
-      name: "bionote",
-      type: "textarea",
-    },
-    {
-      name: "photo",
-      type: "upload",
-      relationTo: "profile-photo",
-    },
+      name: "position",
+      type: "radio",
+      required: true,
+      options: HimatiPositions,
+    }
   ] as Field[],
 };
 

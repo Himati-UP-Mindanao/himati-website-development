@@ -98,17 +98,6 @@ const Articles: CollectionConfig = {
       }),
     },
     {
-      name: "top-article",
-      label: "Top Article",
-      type: "checkbox",
-      defaultValue: false,
-      admin: {
-        condition: (data, siblingData, { user }) => {
-          return user!.role.includes("super-admin");
-        },
-      },
-    },
-    {
       name: "include-featured-photo",
       label: "Include Featured Photo?",
       type: "checkbox",

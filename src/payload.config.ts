@@ -11,6 +11,8 @@ import { HimatiUsers } from './collections/HimatiUsers'
 import Articles from './collections/Articles'
 import FeaturedPhoto from './collections/FeaturedPhoto'
 import ProfilePhoto from './collections/ProfilePhoto'
+import { Pages } from './collections/Pages'
+
 
 import { getServerSideURL } from './utilities/getURL'
 
@@ -29,7 +31,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [HimatiUsers, Articles, FeaturedPhoto, ProfilePhoto],
+  collections: [HimatiUsers, Articles, FeaturedPhoto, ProfilePhoto, Pages],
   globals: [HimatiPosition],
   editor: slateEditor({}),
   db: postgresAdapter({
