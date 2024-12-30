@@ -1,7 +1,9 @@
-import type { CollectionConfig } from "payload";
+import { APIError, type CollectionConfig } from "payload";
 import { slateEditor } from "@payloadcms/richtext-slate";
 import { v4 as uuidv4 } from "uuid";
-import { radio } from "node_modules/payload/dist/fields/validations";
+import { superAdmin } from "@/access/admin";
+import { editor } from "@/access/editor";
+
 
 const Articles: CollectionConfig = {
   slug: "articles",
@@ -13,9 +15,24 @@ const Articles: CollectionConfig = {
     read: () => true,
     update: () => true,
     delete: () => true,
+    readVersions: ({req}) => superAdmin({req}) || editor({req}),
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    beforeChange: [
+      async ({
+        data, req, originalDoc
+      }) => {
+        // Access Control so that only editors and super admins can publish articles
+        if (originalDoc._status === "draft" && data._status === "published") {
+          if (!req.user?.role.includes("editor") || !req.user?.role.includes("super-admin")) {
+            throw new APIError("You must be an editor or a super admin to publish articles", 403, undefined, true);
+          }
+        }
+      }
+    ]
   },
   fields: [
     {
@@ -103,6 +120,9 @@ const Articles: CollectionConfig = {
       label: "Include Featured Photo?",
       type: "checkbox",
       defaultValue: false,
+      admin: {
+        position: "sidebar",
+      }
     },
     {
       name: "photo",
@@ -113,6 +133,7 @@ const Articles: CollectionConfig = {
         condition: (data) => {
           return data["include-featured-photo"];
         },
+        position: "sidebar",
       },
     },
     {
