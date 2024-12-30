@@ -213,6 +213,22 @@ export interface Page {
             blockName?: string | null;
             blockType: 'carousel';
           }
+        | {
+            highlight?:
+              | {
+                  display: {
+                    type: 'text-on-image' | 'normal';
+                    article: string | Article;
+                    'preview-text'?: string | null;
+                    tag?: string | null;
+                  };
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'editor-choice';
+          }
       )[]
     | null;
   updatedAt: string;
@@ -461,6 +477,25 @@ export interface PagesSelect<T extends boolean = true> {
                     tag?: T;
                     article?: T;
                     'preview-text'?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        'editor-choice'?:
+          | T
+          | {
+              highlight?:
+                | T
+                | {
+                    display?:
+                      | T
+                      | {
+                          type?: T;
+                          article?: T;
+                          'preview-text'?: T;
+                          tag?: T;
+                        };
                     id?: T;
                   };
               id?: T;
