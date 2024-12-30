@@ -16,6 +16,7 @@ export interface Config {
     'featured-photo': FeaturedPhoto;
     'profile-photo': ProfilePhoto;
     pages: Page;
+    newsletter: Newsletter;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -27,6 +28,7 @@ export interface Config {
     'featured-photo': FeaturedPhotoSelect<false> | FeaturedPhotoSelect<true>;
     'profile-photo': ProfilePhotoSelect<false> | ProfilePhotoSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    newsletter: NewsletterSelect<false> | NewsletterSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -34,12 +36,8 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {
-    'himati-position': HimatiPosition;
-  };
-  globalsSelect: {
-    'himati-position': HimatiPositionSelect<false> | HimatiPositionSelect<true>;
-  };
+  globals: {};
+  globalsSelect: {};
   locale: null;
   user: HimatiUser & {
     collection: 'himati-users';
@@ -205,6 +203,16 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter".
+ */
+export interface Newsletter {
+  id: number;
+  email: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -229,6 +237,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pages';
         value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'newsletter';
+        value: number | Newsletter;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -390,6 +402,15 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter_select".
+ */
+export interface NewsletterSelect<T extends boolean = true> {
+  email?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
@@ -419,36 +440,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "himati-position".
- */
-export interface HimatiPosition {
-  id: number;
-  item?:
-    | {
-        position?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "himati-position_select".
- */
-export interface HimatiPositionSelect<T extends boolean = true> {
-  item?:
-    | T
-    | {
-        position?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
