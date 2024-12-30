@@ -17,6 +17,8 @@ export interface Config {
     'profile-photo': ProfilePhoto;
     pages: Page;
     newsletter: Newsletter;
+    issues: Issue;
+    'issue-cover-photo': IssueCoverPhoto;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -29,6 +31,8 @@ export interface Config {
     'profile-photo': ProfilePhotoSelect<false> | ProfilePhotoSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     newsletter: NewsletterSelect<false> | NewsletterSelect<true>;
+    issues: IssuesSelect<false> | IssuesSelect<true>;
+    'issue-cover-photo': IssueCoverPhotoSelect<false> | IssueCoverPhotoSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -213,6 +217,37 @@ export interface Newsletter {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "issues".
+ */
+export interface Issue {
+  id: number;
+  title: string;
+  link: string;
+  'cover-photo': string | FeaturedPhoto;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "issue-cover-photo".
+ */
+export interface IssueCoverPhoto {
+  id: number;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -241,6 +276,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'newsletter';
         value: number | Newsletter;
+      } | null)
+    | ({
+        relationTo: 'issues';
+        value: number | Issue;
+      } | null)
+    | ({
+        relationTo: 'issue-cover-photo';
+        value: number | IssueCoverPhoto;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -408,6 +451,35 @@ export interface NewsletterSelect<T extends boolean = true> {
   email?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "issues_select".
+ */
+export interface IssuesSelect<T extends boolean = true> {
+  title?: T;
+  link?: T;
+  'cover-photo'?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "issue-cover-photo_select".
+ */
+export interface IssueCoverPhotoSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

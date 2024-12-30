@@ -19,6 +19,7 @@ import { getServerSideURL } from './utilities/getURL'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import nodemailer from 'nodemailer'
 import { Newsletter } from './collections/Newsletter'
+import { IssueCoverPhoto, Issues } from './collections/Issues'
 
 
 const filename = fileURLToPath(import.meta.url)
@@ -31,7 +32,16 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [HimatiUsers, Articles, FeaturedPhoto, ProfilePhoto, Pages, Newsletter],
+  collections: [
+    HimatiUsers, 
+    Articles, 
+    FeaturedPhoto, 
+    ProfilePhoto, 
+    Pages, 
+    Newsletter, 
+    Issues, 
+    IssueCoverPhoto
+  ],
   globals: [],
   editor: slateEditor({}),
   db: postgresAdapter({
@@ -59,6 +69,7 @@ export default buildConfig({
         // media: true,
         "featured-photo": true,
         "profile-photo": true,
+        "issue-cover-photo": true,
       },
     }),
   ],
