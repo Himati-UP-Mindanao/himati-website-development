@@ -118,7 +118,7 @@ export interface Article {
   }[];
   'include-featured-photo'?: boolean | null;
   photo?: (string | null) | FeaturedPhoto;
-  tags?: ('politics' | 'tech' | 'entertainment' | 'sports')[] | null;
+  scope: 'university' | 'Local' | 'national';
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -359,7 +359,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   content?: T;
   'include-featured-photo'?: T;
   photo?: T;
-  tags?: T;
+  scope?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

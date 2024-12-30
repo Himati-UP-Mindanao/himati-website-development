@@ -1,6 +1,7 @@
 import type { CollectionConfig } from "payload";
 import { slateEditor } from "@payloadcms/richtext-slate";
 import { v4 as uuidv4 } from "uuid";
+import { radio } from "node_modules/payload/dist/fields/validations";
 
 const Articles: CollectionConfig = {
   slug: "articles",
@@ -115,32 +116,26 @@ const Articles: CollectionConfig = {
       },
     },
     {
-      name: "tags",
-      label: "Tags",
-      type: "select",
-      hasMany: true,
+      name: "scope",
+      label: "Scope",
+      type: "radio",
+      required: true,
       options: [
         {
-          label: "Politics",
-          value: "politics",
+          label: "University",
+          value: "university",
         },
         {
-          label: "Tech",
-          value: "tech",
+          label: "Local",
+          value: "Local",
         },
         {
-          label: "Entertainment",
-          value: "entertainment",
-        },
-        {
-          label: "Sports",
-          value: "sports",
+          label: "National",
+          value: "national",
         },
       ],
-      admin: {
-        isClearable: true,
-      },
-    },
+    }
+
   ],
 };
 
