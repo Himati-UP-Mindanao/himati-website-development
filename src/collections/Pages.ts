@@ -1,4 +1,5 @@
 import { admin, superAdmin } from "@/access/admin";
+import { Carousel } from "@/blocks/Carousel";
 import { EditorialBoard } from "@/blocks/EditorialBoard";
 import { TitleParagraphPair } from "@/blocks/TitleParagraphPair";
 import type { CollectionConfig } from "payload";
@@ -28,6 +29,7 @@ export const Pages: CollectionConfig = {
       blocks: [
         TitleParagraphPair,
         EditorialBoard,
+        Carousel,
       ]
     }
   ]

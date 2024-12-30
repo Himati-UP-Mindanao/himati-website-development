@@ -200,6 +200,19 @@ export interface Page {
             blockName?: string | null;
             blockType: 'editorial-board';
           }
+        | {
+            slides?:
+              | {
+                  tag: string;
+                  article: string | Article;
+                  'preview-text': string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'carousel';
+          }
       )[]
     | null;
   updatedAt: string;
@@ -434,6 +447,20 @@ export interface PagesSelect<T extends boolean = true> {
                     'member-info'?: T;
                     'degree-program'?: T;
                     'member-image'?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        carousel?:
+          | T
+          | {
+              slides?:
+                | T
+                | {
+                    tag?: T;
+                    article?: T;
+                    'preview-text'?: T;
                     id?: T;
                   };
               id?: T;
