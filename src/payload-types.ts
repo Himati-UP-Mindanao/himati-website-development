@@ -40,8 +40,12 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'quick-links': QuickLink;
+  };
+  globalsSelect: {
+    'quick-links': QuickLinksSelect<false> | QuickLinksSelect<true>;
+  };
   locale: null;
   user: HimatiUser & {
     collection: 'himati-users';
@@ -574,6 +578,38 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quick-links".
+ */
+export interface QuickLink {
+  id: number;
+  links?:
+    | {
+        title: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quick-links_select".
+ */
+export interface QuickLinksSelect<T extends boolean = true> {
+  links?:
+    | T
+    | {
+        title?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
