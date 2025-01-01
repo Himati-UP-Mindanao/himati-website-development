@@ -1,6 +1,4 @@
 import { adminOrSelf } from "@/access/adminOrSelf";
-import { equal } from "assert";
-import { select } from "node_modules/payload/dist/fields/validations";
 import type { CollectionConfig, Field } from "payload";
 import { v4 as uuidv4 } from "uuid";
 
@@ -8,11 +6,14 @@ const ProfilePhoto: CollectionConfig = {
   slug: "profile-photo",
   admin: {
     useAsTitle: "title",
+    hidden({user}) {
+      if (!user) return true;
+      return !user.role.includes("super-admin") && !user.role.includes("admin");
+    }
   },
   upload: true,
   access: {
     create: () => true,
-    // read: isPublished,
     read: () => true,
     update: () => true,
     delete: () => true,

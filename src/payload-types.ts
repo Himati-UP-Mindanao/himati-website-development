@@ -40,8 +40,12 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'quick-links': QuickLink;
+  };
+  globalsSelect: {
+    'quick-links': QuickLinksSelect<false> | QuickLinksSelect<true>;
+  };
   locale: null;
   user: HimatiUser & {
     collection: 'himati-users';
@@ -112,12 +116,12 @@ export interface Article {
   id?: string | null;
   title: string;
   author: string | HimatiUser;
-  category: 'news' | 'features' | 'kultura' | 'opinion';
   content: {
     [k: string]: unknown;
   }[];
   'include-featured-photo'?: boolean | null;
   photo?: (string | null) | FeaturedPhoto;
+  category: 'news' | 'features' | 'kultura' | 'opinion';
   scope: 'university' | 'Local' | 'national';
   updatedAt: string;
   createdAt: string;
@@ -384,10 +388,10 @@ export interface ArticlesSelect<T extends boolean = true> {
   id?: T;
   title?: T;
   author?: T;
-  category?: T;
   content?: T;
   'include-featured-photo'?: T;
   photo?: T;
+  category?: T;
   scope?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -574,6 +578,38 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quick-links".
+ */
+export interface QuickLink {
+  id: number;
+  links?:
+    | {
+        title: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quick-links_select".
+ */
+export interface QuickLinksSelect<T extends boolean = true> {
+  links?:
+    | T
+    | {
+        title?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

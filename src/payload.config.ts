@@ -20,6 +20,7 @@ import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import nodemailer from 'nodemailer'
 import { Newsletter } from './collections/Newsletter'
 import { IssueCoverPhoto, Issues } from './collections/Issues'
+import { QuickLinks } from './globals/QuickLinks'
 
 
 const filename = fileURLToPath(import.meta.url)
@@ -42,7 +43,7 @@ export default buildConfig({
     Issues, 
     IssueCoverPhoto
   ],
-  globals: [],
+  globals: [QuickLinks],
   editor: slateEditor({}),
   db: postgresAdapter({
     pool: {
