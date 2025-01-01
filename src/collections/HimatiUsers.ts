@@ -6,16 +6,26 @@ import { adminOrSelf } from "@/access/adminOrSelf";
 
 import { sendWelcomeEmail } from "@/utilities/sendWelcomeEmail";
 import { HimatiPositions } from "@/constants/HimatiPositions";
+import { editor } from "@/access/editor";
+import { writer } from "@/access/writer";
 
 export const HimatiUsers: CollectionConfig = {
   slug: "himati-users",
+  labels: {
+    singular: "Himati Staff",
+    plural: "Himati Staff",
+  },
   auth: true,
   admin: {
     useAsTitle: "email",
+    hidden({user}) {
+      if (!user) return true;
+      return !user.role.includes("super-admin") && !user.role.includes("admin");
+    }
   },
   access: {
     create: ({req}) => admin({req}) || superAdmin({req}),
-    read: adminOrSelf,
+    read: ({req}) => admin({req}) || superAdmin({req}) || editor({req}) || writer({req}),
     update: adminOrSelf,
     delete: superAdmin,
   },

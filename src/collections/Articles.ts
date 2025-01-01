@@ -32,7 +32,7 @@ const Articles: CollectionConfig = {
           }
         }
       }
-    ]
+    ],
   },
   fields: [
     {
@@ -155,8 +155,7 @@ const Articles: CollectionConfig = {
           value: "national",
         },
       ],
-    }
-
+    },
   ],
 };
 
