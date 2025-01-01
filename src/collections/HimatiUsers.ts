@@ -105,6 +105,10 @@ export const HimatiUsers: CollectionConfig = {
       type: "radio",
       required: true,
       options: HimatiPositions,
+      access: {
+        create: ({req}) => admin({req}) || superAdmin({req}),
+        update: ({req}) => admin({req}) || superAdmin({req}),
+      }
     }
   ] as Field[],
 };
