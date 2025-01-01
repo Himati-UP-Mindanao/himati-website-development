@@ -116,12 +116,12 @@ export interface Article {
   id?: string | null;
   title: string;
   author: string | HimatiUser;
-  category: 'news' | 'features' | 'kultura' | 'opinion';
   content: {
     [k: string]: unknown;
   }[];
   'include-featured-photo'?: boolean | null;
   photo?: (string | null) | FeaturedPhoto;
+  category: 'news' | 'features' | 'kultura' | 'opinion';
   scope: 'university' | 'Local' | 'national';
   updatedAt: string;
   createdAt: string;
@@ -388,10 +388,10 @@ export interface ArticlesSelect<T extends boolean = true> {
   id?: T;
   title?: T;
   author?: T;
-  category?: T;
   content?: T;
   'include-featured-photo'?: T;
   photo?: T;
+  category?: T;
   scope?: T;
   updatedAt?: T;
   createdAt?: T;

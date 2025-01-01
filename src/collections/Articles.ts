@@ -3,6 +3,8 @@ import { slateEditor } from "@payloadcms/richtext-slate";
 import { v4 as uuidv4 } from "uuid";
 import { superAdmin } from "@/access/admin";
 import { editor } from "@/access/editor";
+import { writer } from "@/access/writer";
+import { selfWrittenOrEditor } from "@/access/selfWrittenOrEditor";
 
 
 const Articles: CollectionConfig = {
@@ -11,27 +13,29 @@ const Articles: CollectionConfig = {
     useAsTitle: "title",
   },
   access: {
-    create: () => true,
+    create: writer,
     read: () => true,
-    update: () => true,
-    delete: () => true,
-    readVersions: ({req}) => superAdmin({req}) || editor({req}),
+    update: selfWrittenOrEditor,
+    delete: superAdmin,
+    readVersions: ({ req }) => superAdmin({ req }) || editor({ req }),
   },
   versions: {
     drafts: true,
   },
   hooks: {
     beforeChange: [
-      async ({
-        data, req, originalDoc
-      }) => {
-        // Access Control so that only editors and super admins can publish articles
-        if (originalDoc._status === "draft" && data._status === "published") {
-          if (!req.user?.role.includes("editor") || !req.user?.role.includes("super-admin")) {
-            throw new APIError("You must be an editor or a super admin to publish articles", 403, undefined, true);
+      async ({ data, req, originalDoc }) => {
+        const isPublishing = data._status === "published";
+        const wasDraft = originalDoc?._status === "draft";
+        const isEditor = req.user?.role.includes("editor");
+
+        
+        if ((isPublishing && Object.keys(originalDoc).length === 0) || (isPublishing && wasDraft)) {
+          if (!isEditor) {
+            throw new APIError("You must be an editor to publish articles", 403, undefined, true);
           }
-        }
-      }
+        } 
+      },
     ],
   },
   fields: [
@@ -62,33 +66,9 @@ const Articles: CollectionConfig = {
       required: true,
       defaultValue: ({ user }) => user!.id,
       access: {
-        create: () => true,
-        update: () => true,
+        create: () => false,
+        update: () => false,
       },
-    },
-    {
-      name: "category",
-      label: "Category",
-      type: "radio",
-      required: true,
-      options: [
-        {
-          label: "News",
-          value: "news",
-        },
-        {
-          label: "Features",
-          value: "features",
-        },
-        {
-          label: "Kultura",
-          value: "kultura",
-        },
-        {
-          label: "Opinion",
-          value: "opinion",
-        },
-      ],
     },
     {
       name: "content",
@@ -137,10 +117,40 @@ const Articles: CollectionConfig = {
       },
     },
     {
+      name: "category",
+      label: "Category",
+      type: "radio",
+      required: true,
+      admin: {
+        position: "sidebar",
+      },
+      options: [
+        {
+          label: "News",
+          value: "news",
+        },
+        {
+          label: "Features",
+          value: "features",
+        },
+        {
+          label: "Kultura",
+          value: "kultura",
+        },
+        {
+          label: "Opinion",
+          value: "opinion",
+        },
+      ],
+    },
+    {
       name: "scope",
       label: "Scope",
       type: "radio",
       required: true,
+      admin: {
+        position: "sidebar",
+      },
       options: [
         {
           label: "University",
