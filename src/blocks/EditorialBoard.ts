@@ -1,4 +1,3 @@
-import { after } from "node:test";
 import type { Block } from "payload";
 
 export const EditorialBoard: Block = {

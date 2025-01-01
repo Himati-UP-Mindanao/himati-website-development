@@ -1,6 +1,4 @@
 import { adminOrSelf } from "@/access/adminOrSelf";
-import { equal } from "assert";
-import { select } from "node_modules/payload/dist/fields/validations";
 import type { CollectionConfig, Field } from "payload";
 import { v4 as uuidv4 } from "uuid";
 
