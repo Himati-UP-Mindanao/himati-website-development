@@ -29,7 +29,7 @@ const Articles: CollectionConfig = {
         const wasDraft = originalDoc?._status === "draft";
         const isEditor = req.user?.role.includes("editor");
 
-        
+        // Access control so that only editors can publish articles
         if ((isPublishing && Object.keys(originalDoc).length === 0) || (isPublishing && wasDraft)) {
           if (!isEditor) {
             throw new APIError("You must be an editor to publish articles", 403, undefined, true);
