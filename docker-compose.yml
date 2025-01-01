@@ -1,23 +1,26 @@
 services:
-  web:
-    build: .
-    container_name: nextjs-docker
+  payload:
+    image: node:18-alpine
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes:
-      - .:/app
-      - /app/node_modules
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    working_dir: /home/node/app/
+    command: sh -c "yarn install && yarn dev"
     depends_on:
       - postgres
     env_file:
       - .env
+
   postgres:
     restart: always
     image: postgres:latest
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}one
 
 volumes:
-  pgdata:
+  data:
+  node_modules:
