@@ -5,6 +5,10 @@ const FeaturedPhoto: CollectionConfig = {
   slug: "featured-photo",
   admin: {
     useAsTitle: "id",
+    hidden({ user }) {
+      if (!user) return true;
+      return !user.role.includes("super-admin") && !user.role.includes("admin");
+    },
   },
   upload: true,
   access: {

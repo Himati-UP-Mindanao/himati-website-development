@@ -6,11 +6,14 @@ const ProfilePhoto: CollectionConfig = {
   slug: "profile-photo",
   admin: {
     useAsTitle: "title",
+    hidden({user}) {
+      if (!user) return true;
+      return !user.role.includes("super-admin") && !user.role.includes("admin");
+    }
   },
   upload: true,
   access: {
     create: () => true,
-    // read: isPublished,
     read: () => true,
     update: () => true,
     delete: () => true,
