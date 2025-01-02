@@ -1,3 +1,5 @@
+import { admin, superAdmin } from "@/access/admin";
+import { editor } from "@/access/editor";
 import type { CollectionConfig, Field } from "payload";
 
 export const Issues: CollectionConfig = {
@@ -8,6 +10,16 @@ export const Issues: CollectionConfig = {
   },
   admin: {
     useAsTitle: "title",
+    hidden({user}) {
+      if (!user) return true;
+      return !user.role.includes("super-admin") && !user.role.includes("admin") && !user.role.includes("editor");
+    }
+  },
+  access: {
+    create: ({req}) => superAdmin({req}) || admin({req}) || editor({req}),
+    read: () => true,
+    update: ({req}) => superAdmin({req}) || admin({req}) || editor({req}),
+    delete: ({req}) => superAdmin({req}),
   },
   fields: [
     {
@@ -37,6 +49,18 @@ export const IssueCoverPhoto: CollectionConfig = {
   labels: {
     singular: "Issue Cover Photo",
     plural: "Issue Cover Photos",
+  },
+  admin: {
+    hidden({user}) {
+      if (!user) return true;
+      return !user.role.includes("super-admin") && !user.role.includes("admin") && !user.role.includes("editor");
+    }
+  },
+  access: {
+    create: ({req}) => superAdmin({req}) || admin({req}) || editor({req}),
+    read: () => true,
+    update: ({req}) => superAdmin({req}) || admin({req}) || editor({req}),
+    delete: ({req}) => superAdmin({req}),
   },
   fields: [
     {

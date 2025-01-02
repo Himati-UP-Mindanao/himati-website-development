@@ -1,3 +1,6 @@
+import { authenticated } from "@/access/authenticated";
+import { selfWritten } from "@/access/selfWritten";
+import { selfWrittenOrAdmin } from "@/access/selfWrittenOrAdmin";
 import type { CollectionConfig } from "payload";
 import { v4 as uuidv4 } from "uuid";
 
@@ -5,17 +8,13 @@ const FeaturedPhoto: CollectionConfig = {
   slug: "featured-photo",
   admin: {
     useAsTitle: "id",
-    hidden({ user }) {
-      if (!user) return true;
-      return !user.role.includes("super-admin") && !user.role.includes("admin");
-    },
   },
   upload: true,
   access: {
-    create: () => true,
+    create: authenticated,
     read: () => true,
-    update: () => true,
-    delete: () => true,
+    update: selfWritten,
+    delete: selfWrittenOrAdmin,
   },
   fields: [
     {
@@ -39,8 +38,8 @@ const FeaturedPhoto: CollectionConfig = {
       required: true,
       defaultValue: ({ user }) => user!.id,
       access: {
-        create: () => true,
-        update: () => true,
+        create: () => false,
+        update: () => false,
       },
     },
     {
