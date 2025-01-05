@@ -1,10 +1,23 @@
+import { superAdmin } from "@/access/admin";
 import type { CollectionConfig } from "payload";
 
 export const Newsletter: CollectionConfig = {
   slug: "newsletter",
   labels: {
-    singular: "Newsletter",
-    plural: "Newsletters",
+    singular: "Newsletter Subscriber",
+    plural: "Newsletter Subscribers",
+  },
+  admin: {
+    hidden({ user }) {
+      if (!user) return true;
+      return !user.role.includes("super-admin") && !user.role.includes("admin");
+    }
+  },
+  access: {
+    create: () => true,
+    read: () => true,
+    update: superAdmin,
+    delete: superAdmin,
   },
   fields: [
     {

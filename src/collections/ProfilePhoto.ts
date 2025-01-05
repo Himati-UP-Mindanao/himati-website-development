@@ -1,3 +1,4 @@
+import { admin, superAdmin } from "@/access/admin";
 import { adminOrSelf } from "@/access/adminOrSelf";
 import type { CollectionConfig, Field } from "payload";
 import { v4 as uuidv4 } from "uuid";
@@ -13,10 +14,10 @@ const ProfilePhoto: CollectionConfig = {
   },
   upload: true,
   access: {
-    create: () => true,
+    create: ({ req }) => admin({req}) || superAdmin({req}),
     read: () => true,
-    update: () => true,
-    delete: () => true,
+    update: ({req}) => admin({req}) || superAdmin({req}),
+    delete: superAdmin,
   },
   fields: [
     {
