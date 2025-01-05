@@ -6,6 +6,7 @@ import { editor } from "@/access/editor";
 import { writer } from "@/access/writer";
 import { selfWrittenOrEditor } from "@/access/selfWrittenOrEditor";
 import { published } from "@/access/published";
+import { canReadArticle } from "@/access/canReadArticle";
 
 
 const Articles: CollectionConfig = {
@@ -15,7 +16,7 @@ const Articles: CollectionConfig = {
   },
   access: {
     create: writer,
-    read: published,
+    read: canReadArticle,
     update: selfWrittenOrEditor,
     delete: superAdmin,
     readVersions: ({ req }) => superAdmin({ req }) || editor({ req }),
