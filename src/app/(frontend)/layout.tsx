@@ -1,10 +1,39 @@
 import type { Metadata } from 'next'
+import localFont from 'next/font/local'
 import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Himati',
   description: 'Official publication of UP Mindanao',
 }
+
+const acronym = localFont({
+  src: [
+    {
+      path: './assets/fonts/Acronym/ACRONYM BOLD.woff2',
+      weight: '700',
+      style: 'normal',
+    }
+  ],
+  variable: '--acronym',
+}) 
+
+const guardian = localFont({
+  src: [
+    {
+      path: './assets/fonts/Guardian Egyptian/GUARDIANTEXTEGYPT-MEDIUM.woff2',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: './assets/fonts/Guardian Egyptian/GUARDIANTEXTEGYPT-REGULAR.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
+  variable: '--guardian',
+});
+
 
 export default function RootLayout({
   children,
@@ -13,7 +42,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={`${acronym.variable} ${guardian.variable} font-guardian`}>{children}</body>
     </html>
   )
 }
