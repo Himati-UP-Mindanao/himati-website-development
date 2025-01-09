@@ -32,6 +32,27 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components:{
+      graphics: {
+        Logo: '/graphics/Logo/index.tsx',
+        Icon: '/graphics/Logo/index.tsx',
+      }
+    },
+    meta: {
+      icons: [
+        {
+          rel: 'icon',
+          type: 'image/png',
+          url: '/icon.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          type: 'image/png',
+          url: '/apple-icon.png',
+        },
+      ]
+    }
+
   },
   collections: [
     HimatiUsers, 
