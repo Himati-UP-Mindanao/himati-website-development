@@ -12,6 +12,9 @@ Himati is the official student publication of the University of the Philippines 
 
 **_Matapang. Makabuluhan. Mapagpalaya._**
 
+## 🔗 URL
+https://himati-website-development.vercel.app/
+
 ## Technology
 
 This website is built using NextJS 15, and Payload CMS 3.0.
