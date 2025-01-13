@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
+import Header from './components/Header/Header'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -13,10 +14,15 @@ const acronym = localFont({
       path: './assets/fonts/Acronym/ACRONYM BOLD.woff2',
       weight: '700',
       style: 'normal',
-    }
+    },
+    {
+      path: './assets/fonts/Acronym/ACRONYM REGULAR.woff2',
+      weight: '400',
+      style: 'normal',
+    },
   ],
   variable: '--acronym',
-}) 
+})
 
 const guardian = localFont({
   src: [
@@ -30,10 +36,14 @@ const guardian = localFont({
       weight: '400',
       style: 'normal',
     },
+    {
+      path: './assets/fonts/Guardian Egyptian/GuardEgyptianDisp-Light.woff2',
+      weight: '300',
+      style: 'normal',
+    }
   ],
   variable: '--guardian',
-});
-
+})
 
 export default function RootLayout({
   children,
@@ -42,7 +52,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${acronym.variable} ${guardian.variable} font-guardian`}>{children}</body>
+      <body className={`${acronym.variable} ${guardian.variable} font-guardian`}>
+        <Header />
+        {children}
+      </body>
     </html>
   )
 }
