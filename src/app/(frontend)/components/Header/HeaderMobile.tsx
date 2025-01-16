@@ -12,7 +12,7 @@ const LINKS = ["HOME", "NEWS", "FEATURES", "CULTTURES", "OPINION", "PAMATI", "AB
 const MobileHeader = () => {
   return (
     <header className="font-acronym md:hidden">
-      <div className="flex flex-col items-center px-8 bg-[radial-gradient(circle,#CA0808_0%,#810404_61%)] p-2">
+      <div className="flex flex-col items-center px-8 bg-[radial-gradient(circle,#CA0808_0%,#810404_61%)] py-2">
         <div className="flex flex-row items-center justify-between w-full">
           <IoMenu className="h-5 w-5 text-xl font-semibold text-white" />
           <div className="flex flex-row items-center border-[1.5px] gap-3 rounded-full pr-4">
