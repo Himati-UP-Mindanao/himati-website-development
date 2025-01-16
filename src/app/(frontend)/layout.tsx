@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import Header from './components/Header/Header'
 import './globals.css'
+import Footer from './components/Footer/Footer'
 
 export const metadata: Metadata = {
   title: 'Himati',
@@ -20,6 +21,11 @@ const acronym = localFont({
       weight: '400',
       style: 'normal',
     },
+    {
+      path: './assets/fonts/Acronym/ACRONYM LIGHT.woff2',
+      weight: '300',
+      style: 'normal',
+    }
   ],
   variable: '--acronym',
 })
@@ -55,6 +61,7 @@ export default function RootLayout({
       <body className={`${acronym.variable} ${guardian.variable} font-guardian`}>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   )
