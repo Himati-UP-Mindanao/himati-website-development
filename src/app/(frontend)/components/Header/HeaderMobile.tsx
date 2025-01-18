@@ -1,20 +1,28 @@
-import React from 'react';
-import { FiSearch } from 'react-icons/fi';
-import { IoMenu } from 'react-icons/io5';
+'use client'
 
-import Image from 'next/image';
+import { FiSearch } from 'react-icons/fi'
+import { IoMenu, IoCloseOutline } from 'react-icons/io5'
 
-import HimatiIcon from '@/assets/himati-icon.svg';
-import Link from 'next/link';
+import Image from 'next/image'
 
-const LINKS = ["HOME", "NEWS", "FEATURES", "CULTTURES", "OPINION", "PAMATI", "ABOUT"]
+import HimatiIcon from '@/assets/himati-icon.svg'
+import Link from 'next/link'
+import { useState } from 'react'
+
+const LINKS = ['HOME', 'NEWS', 'FEATURES', 'CULTURES', 'OPINION', 'PAMATI', 'ABOUT']
 
 const MobileHeader = () => {
+  const [isOpen, setIsOpen] = useState(false)
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen)
+  }
+
   return (
     <header className="font-acronym md:hidden">
       <div className="flex flex-col items-center px-8 bg-[radial-gradient(circle,#CA0808_0%,#810404_61%)] py-2">
         <div className="flex flex-row items-center justify-between w-full">
-          <IoMenu className="h-5 w-5 text-xl font-semibold text-white" />
+          <IoMenu className="h-5 w-5 text-xl font-semibold text-white" onClick={toggleMenu} />
           <div className="flex flex-row items-center border-[1.5px] gap-3 rounded-full pr-4">
             <Image src={HimatiIcon} alt="Himati Icon" className="h-14 w-14" />
             <h1 className="text-xl text-white">HIMATI</h1>
@@ -22,8 +30,24 @@ const MobileHeader = () => {
           <FiSearch className="h-5 w-5 text-xl font-semibold text-white" />
         </div>
       </div>
-    </header>
-  );
-};
+      <nav
+        className="h-screen w-2/5 fixed top-0 left-0 bg-negative-900 transition-all duration-300 ease-in-out transform translate-x-[-100%]"
+        style={{ transform: isOpen ? 'translateX(0)' : 'translateX(-100%)' }}
+      >
+        <div className='px-8 py-6 flex justify-end w-full'>
+          <IoCloseOutline className="h-8 w-8 text-white" onClick={toggleMenu} />
+        </div>
 
-export default MobileHeader;
+        <ul className="flex flex-col justify-center text-white font-bold">
+          {LINKS.map((link, index) => (
+            <li key={index} className='border-b border-white px-8 py-4'>
+              <Link href="/">{link}</Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </header>
+  )
+}
+
+export default MobileHeader
