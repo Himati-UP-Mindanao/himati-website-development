@@ -18,8 +18,17 @@ const DesktopHeader = () => {
 
   return (
     <header className="hidden font-acronym md:block">
-      <div className="bg-[radial-gradient(circle,#CA0808_0%,#810404_61%)] items-center flex justify-center">
-        <div className="flex flex-col items-center py-5 max-w-screen-xl w-full">
+      <div className="bg-[radial-gradient(circle,#CA0808_0%,#810404_61%)] items-center flex justify-center relative">
+        <div
+          className="absolute  h-full inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.2)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.2)_1px,transparent_1px)] bg-[length:32px_32px]"
+          style={{
+            WebkitMaskImage: 'radial-gradient(circle, transparent 60%, black 95%)',
+            maskImage: 'radial-gradient(circle, transparent 60%, black 95%)',
+            WebkitMaskComposite: 'xor',
+            maskComposite: 'exclude',
+          }}
+        ></div>
+        <div className="flex flex-col items-center py-5 max-w-screen-xl w-full relative z-10">
           {/* Overlay for grid pattern */}
           {/* <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.2)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.2)_1px,transparent_1px)] bg-[length:32px_32px] [mask-image:radial-gradient(ellipse_50%_50%_at_100%_0%,#000_0%,transparent_40%)]"></div> */}
 
@@ -38,7 +47,7 @@ const DesktopHeader = () => {
             {navLinks.map(({ label, href }) => (
               <Link
                 key={href}
-                href={"/"}
+                href={href}
                 className="text-base font-semibold text-white transition-colors duration-300 hover:text-gray-300"
               >
                 {label}
