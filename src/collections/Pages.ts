@@ -9,6 +9,10 @@ export const Pages: CollectionConfig = {
   slug: "pages",
   admin: {
     useAsTitle: "page-name",
+    hidden({ user }) {
+      if (!user) return true;
+      return !user.role.includes("super-admin") && !user.role.includes("admin");
+    },
   },
   access: {
     create: superAdmin,
