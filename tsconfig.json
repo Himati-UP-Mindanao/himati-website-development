@@ -36,6 +36,9 @@
       "@/*": [
         "./src/*"
       ],
+      "@/assets/*": [
+        "./src/app/(frontend)/assets/*"
+      ]
     }
   },
   "include": [
