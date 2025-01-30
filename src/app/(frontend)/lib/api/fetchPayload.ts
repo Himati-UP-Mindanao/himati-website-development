@@ -7,7 +7,7 @@ const payload = await getPayload({ config });
 export const getPage = cache(async (pageName: string) => {
   const results = await payload.find({
     collection: "pages",
-    depth: 3,
+    depth: 1,
     where: {
       "page-name": {
         equals: pageName,
@@ -15,5 +15,41 @@ export const getPage = cache(async (pageName: string) => {
     },
   });
 
-  return results
+  return results;
+})
+
+export const getArticles = cache(async (category: string) => {
+  const results = await payload.find({
+    collection: "articles",
+    depth: 1,
+    where: {
+      category: {
+        equals: category
+      }
+    },
+    sort: '-createdAt',
+  })
+
+  return results;
+})
+
+export const getCategorizedArticles = cache(async (category: string) => {
+  const articles = await getArticles(category);
+
+  if (!articles) {
+    return null;
+  }
+
+  const { docs } = articles;
+
+  const scopes = [...new Set(docs.map((doc) => doc.scope))];
+
+  const categorizedArticles = scopes.map((scope) => {
+    return {
+      "scope": scope.charAt(0).toUpperCase() + scope.slice(1),
+      articles: docs.filter((doc) => doc.scope === scope).slice(0, 3),
+    }
+  })
+
+  return categorizedArticles;
 })

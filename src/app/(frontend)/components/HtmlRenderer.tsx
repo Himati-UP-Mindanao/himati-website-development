@@ -3,7 +3,7 @@ import sanitizeHtml from 'sanitize-html'
 
 interface HtmlRendererProps {
   html: string
-  className: string
+  className?: string
 }
 
 const HtmlRenderer: React.FC<HtmlRendererProps> = ({ html, className = ""}) => {
