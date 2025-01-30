@@ -42,12 +42,12 @@ export const getCategorizedArticles = cache(async (category: string) => {
 
   const { docs } = articles;
 
-  const scopes = [...new Set(docs.map((doc) => doc.scope))];
+  const scopes = category === "news" ? ["University", "Local", "National"] : [...new Set(docs.map((doc) => doc.scope))];
 
   const categorizedArticles = scopes.map((scope) => {
     return {
       "scope": scope.charAt(0).toUpperCase() + scope.slice(1),
-      articles: docs.filter((doc) => doc.scope === scope).slice(0, 3),
+      articles: docs.filter((doc) => doc.scope.toLowerCase() === scope.toLowerCase()).slice(0, 3),
     }
   })
 
