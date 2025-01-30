@@ -9,7 +9,6 @@ const About = async () => {
   const results = await getPage('About')
 
   const layouts = results.docs[0].layout as unknown as NonNullable<Page['layout']>
-  console.log(layouts)
 
   const getPosition = (position: string) => {
     if (position === 'editor-in-chief') return 'Editor-in-Chief'
@@ -24,19 +23,13 @@ const About = async () => {
     return <div>Something went wrong</div>
   }
 
-  console.log(layouts)
 
   const editorial_board = layouts?.find(
     (block): block is Extract<typeof block, { blockType: 'editorial-board' }> =>
       block.blockType === 'editorial-board',
   )
 
-  const who_we_are = layouts?.find(
-    (block): block is Extract<typeof block, { blockType: 'title-paragraph-pair' }> =>
-      block.blockType === 'title-paragraph-pair',
-  )
-
-  const decl_of_prin = layouts?.filter(
+  const title_para_pair = layouts?.filter(
     (block): block is Extract<typeof block, { blockType: 'title-paragraph-pair' }> =>
       block.blockType === 'title-paragraph-pair',
   )
@@ -44,7 +37,7 @@ const About = async () => {
   return (
     <main className="px-8 py-2 lg:py-5 max-w-screen-xl mx-auto font-acronym">
       <div className='space-y-12 mt-14'>
-        {decl_of_prin.map((block, index) => (
+        {title_para_pair.map((block, index) => (
           <div key={index} className="space-y-8">
             <HtmlRenderer className={`text-center ${index===0 ? 'text-5xl' : 'text-3xl'} font-bold ${index === 0 ? 'text-negative-800' : ''}`} html={slateToHtml(block.title, payloadSlateToDomConfig) || ''} />
             <HtmlRenderer className='space-y-8 ' html={slateToHtml(block.paragraph, payloadSlateToDomConfig) || ''} />
@@ -68,8 +61,8 @@ const About = async () => {
                         ? member['member-image']?.url || ''
                         : member['member-image'] || ''
                     }
-                    height={20}
-                    width={20}
+                    height={typeof member['member-image'] != 'string' ? member['member-image']?.height || 100 : 100}
+                    width={typeof member['member-image'] != 'string' ? member['member-image']?.width || 100 : 100}
                     alt={member['member-info']['last-name']}
                     className="w-full"
                     priority
