@@ -36,7 +36,7 @@ const HighlightSection = ({ layout }: { layout: Page['layout'] }) => {
         <div className="grid md:grid-cols-3 gap-9 py-6">
           <div className="md:col-span-2 space-y-3">
             {/* Image Holder */}
-            <div className="aspect-[2/1] w-full relative">
+            <div className="aspect-video w-full relative">
               <Image
                 src={content[0].article.photo.url || '/test_image.png'}
                 alt={content[0].article.photo['alt-text'] || 'Test_image'}
@@ -62,7 +62,7 @@ const HighlightSection = ({ layout }: { layout: Page['layout'] }) => {
             {content.slice(1).map((highlight, index) => (
               <div key={index} className="space-y-3">
                 {/* Image holder */}
-                <div className="w-full aspect-[2/1] relative">
+                <div className="w-full aspect-video relative">
                   <Image
                     src={highlight.article.photo.url || '/test_image.png'}
                     alt={highlight.article.photo['alt-text'] || "Test_image"}
