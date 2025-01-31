@@ -4,10 +4,10 @@ import config from "@payload-config";
 
 const payload = await getPayload({ config });
 
-export const getPage = cache(async (pageName: string) => {
+export const getPage = cache(async (pageName: string, depth?: number) => {
   const results = await payload.find({
     collection: "pages",
-    depth: 1,
+    depth: depth || 1,
     where: {
       "page-name": {
         equals: pageName.charAt(0).toUpperCase() + pageName.slice(1),
