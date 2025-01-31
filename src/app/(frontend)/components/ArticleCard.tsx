@@ -25,6 +25,7 @@ const ArticleCard = ({ article }: { article: Article }) => {
                 : 'Article Image'
             }
             fill
+            sizes='(max-width: 392px) 100vw, (max-width: 768px) 50vw, 33vw'
             priority
             className="object-cover object-top"
           />
