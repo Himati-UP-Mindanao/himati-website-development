@@ -10,7 +10,7 @@ export const getPage = cache(async (pageName: string) => {
     depth: 1,
     where: {
       "page-name": {
-        equals: pageName,
+        equals: pageName.charAt(0).toUpperCase() + pageName.slice(1),
       },
     },
   });
