@@ -2,9 +2,13 @@ import { Article, FeaturedPhoto, HimatiUser, Page } from '@/payload-types'
 import Image from 'next/image'
 import React from 'react'
 import { getUserFullName } from '../lib/utils'
+import { getPage } from '../lib/api/fetchPayload'
 
-const HighlightSection = ({ layout }: { layout: Page['layout'] }) => {
-  if (!layout) {
+const HighlightSection = async ({ slug }: { slug: string }) => {
+  const pageContent = await getPage(slug, 2);
+  const layout = pageContent.docs[0].layout;
+
+  if (!layout || !layout.length) {
     return <div>Something went wrong</div>
   }
 

@@ -1,24 +1,22 @@
 import React from 'react'
-import { getCategorizedArticles, getPage } from '../../lib/api/fetchPayload'
+import { getCategorizedArticles } from '../../lib/api/fetchPayload'
 import ArticleCard from '../../components/ArticleCard'
 import HighlightSection from '../../components/HighlightSection'
 
 export const revalidate = 60
 
 const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
-  const articles = await getCategorizedArticles((await params).slug)
-  const pageContent = await getPage((await params).slug, 2)
+  const slug = (await params).slug
+  const articles = await getCategorizedArticles(slug)
 
-  if (!articles || !pageContent.docs[0].layout) {
+  if (!articles) {
     return <div>Something went wrong</div>
   }
-
-  const layouts = pageContent.docs[0].layout
 
   return (
     <main className="px-8 py-2 lg:py-32 max-w-screen-xl mx-auto font-acronym space-y-16">
       {/* Highlight Section */}
-      <HighlightSection layout={layouts} />
+      <HighlightSection slug={slug} />
 
       {/* Articles Sections */}
       {articles.map((article, index) => (
