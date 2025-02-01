@@ -160,7 +160,7 @@ const Articles: CollectionConfig = {
         },
         {
           label: "Local",
-          value: "Local",
+          value: "local",
         },
         {
           label: "National",
