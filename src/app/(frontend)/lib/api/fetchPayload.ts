@@ -53,3 +53,14 @@ export const getCategorizedArticles = cache(async (category: string) => {
 
   return categorizedArticles;
 })
+
+export const getIssues = cache(async (limit: number = 20) => {
+  const results = await payload.find({
+    collection: "issues",
+    depth: 1,
+    sort: '-createdAt',
+    limit: limit,
+  })
+
+  return results;
+})
