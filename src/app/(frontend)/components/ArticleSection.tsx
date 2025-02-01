@@ -5,7 +5,7 @@ import ArticleCard from './ArticleCard';
 const ArticleSection = async ({ slug }: { slug: string }) => {
   const articles = await getCategorizedArticles(slug);
 
-  if (!articles) return <div>Something went wrong</div>
+  if (!articles) return null;
 
   return (
     <>

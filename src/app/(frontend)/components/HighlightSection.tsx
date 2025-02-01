@@ -6,11 +6,10 @@ import { getPage } from '../lib/api/fetchPayload'
 
 const HighlightSection = async ({ slug }: { slug: string }) => {
   const pageContent = await getPage(slug, 2);
-  const layout = pageContent.docs[0].layout;
 
-  if (!layout || !layout.length) {
-    return <div>Something went wrong</div>
-  }
+  const layout = pageContent.docs[0]?.layout;
+
+  if (!layout || !layout.length) return null
 
   const highlights = layout.find(
     (block): block is Extract<typeof block, { blockType: 'editor-choice' }> =>
