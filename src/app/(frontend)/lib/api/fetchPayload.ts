@@ -1,6 +1,7 @@
 import { cache } from 'react'
 import { BasePayload, getPayload } from 'payload'
 import config from '@payload-config'
+import { notFound } from 'next/navigation'
 
 let payloadInstance: BasePayload | null = null
 
@@ -15,17 +16,22 @@ export const getPayloadInstance = async () => {
 export const getPage = cache(async (pageName: string, depth?: number) => {
   const payload = await getPayloadInstance()
 
-  const results = await payload.find({
-    collection: 'pages',
-    depth: depth || 1,
-    where: {
-      'page-name': {
-        equals: pageName.charAt(0).toUpperCase() + pageName.slice(1),
+  try {
+    const results = await payload.find({
+      collection: 'pages',
+      depth: depth || 1,
+      where: {
+        'page-name': {
+          equals: pageName.charAt(0).toUpperCase() + pageName.slice(1),
+        },
       },
-    },
-  })
+    })
 
-  return results
+    return results
+  } catch (error) {
+    console.error(error)
+    notFound()
+  }
 })
 
 export const getArticles = cache(
@@ -43,18 +49,22 @@ export const getArticles = cache(
     if (scope) {
       conditions.push({ scope: { equals: scope } })
     }
+    try {
+      const results = await payload.find({
+        collection: 'articles',
+        depth: 1,
+        where: {
+          and: conditions,
+        },
+        sort: '-createdAt',
+        limit: limit,
+      })
 
-    const results = await payload.find({
-      collection: 'articles',
-      depth: 1,
-      where: {
-        and: conditions,
-      },
-      sort: '-createdAt',
-      limit: limit,
-    })
-
-    return results
+      return results
+    } catch (error) {
+      console.error(error)
+      notFound()
+    }
   },
 )
 
@@ -84,12 +94,17 @@ export const getCategorizedArticles = cache(async (category: string) => {
 
 export const getIssues = cache(async (limit: number = 20) => {
   const payload = await getPayloadInstance()
-  const results = await payload.find({
-    collection: 'issues',
-    depth: 1,
-    sort: '-createdAt',
-    limit: limit,
-  })
+  try {
+    const results = await payload.find({
+      collection: 'issues',
+      depth: 1,
+      sort: '-createdAt',
+      limit: limit,
+    })
 
-  return results
+    return results
+  } catch (error) {
+    console.log(error)
+    notFound()
+  }
 })
