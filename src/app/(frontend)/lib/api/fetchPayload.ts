@@ -1,10 +1,20 @@
 import { cache } from 'react'
-import { getPayload } from 'payload'
+import { BasePayload, getPayload } from 'payload'
 import config from '@payload-config'
 
-const payload = await getPayload({ config })
+let payloadInstance: BasePayload | null = null
+
+export const getPayloadInstance = async () => {
+  if (!payloadInstance) {
+    payloadInstance = await getPayload({ config })
+  }
+
+  return payloadInstance
+}
 
 export const getPage = cache(async (pageName: string, depth?: number) => {
+  const payload = await getPayloadInstance()
+
   const results = await payload.find({
     collection: 'pages',
     depth: depth || 1,
@@ -20,6 +30,8 @@ export const getPage = cache(async (pageName: string, depth?: number) => {
 
 export const getArticles = cache(
   async (category: string, scope: string | null = null, limit: number = 25) => {
+    const payload = await getPayloadInstance()
+
     const conditions: any[] = [
       {
         category: {
@@ -29,7 +41,7 @@ export const getArticles = cache(
     ]
 
     if (scope) {
-      conditions.push({ scope: { equals: scope === "local" ? scope.charAt(0).toUpperCase() + scope.slice(1) : scope } })
+      conditions.push({ scope: { equals: scope } })
     }
 
     const results = await payload.find({
@@ -71,6 +83,7 @@ export const getCategorizedArticles = cache(async (category: string) => {
 })
 
 export const getIssues = cache(async (limit: number = 20) => {
+  const payload = await getPayloadInstance()
   const results = await payload.find({
     collection: 'issues',
     depth: 1,
