@@ -2,11 +2,18 @@ import React from 'react'
 import { getCategorizedArticles } from '../../lib/api/fetchPayload'
 import ArticleCard from '../../components/ArticleCard'
 import HighlightSection from '../../components/HighlightSection'
+import { notFound } from 'next/navigation'
 
 export const revalidate = 60
 
+const VALID_SLUGS = ['news', 'features', 'kultura', 'opinion', 'pamati']
+
 const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const slug = (await params).slug
+  if (!VALID_SLUGS.includes(slug)) {
+    return notFound()
+  }
+
   const articles = await getCategorizedArticles(slug)
 
   if (!articles) {

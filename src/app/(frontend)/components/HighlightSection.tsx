@@ -1,4 +1,4 @@
-import { Article, FeaturedPhoto, HimatiUser, Page } from '@/payload-types'
+import { Article, FeaturedPhoto, HimatiUser } from '@/payload-types'
 import Image from 'next/image'
 import React from 'react'
 import { getUserFullName } from '../lib/utils'
