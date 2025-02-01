@@ -21,14 +21,16 @@ const ArticleCard = ({ article }: { article: Article }) => {
     <div className="space-y-3">
       {/* Image holder */}
       <div className="aspect-video relative bg-neutral-900">
-        <Image
-          src={content.photo.url || '/test_image.png'}
-          alt={content.photo['alt-text'] || 'Test_image'}
-          sizes="(max-width: 392px) 100vw, (max-width: 768px) 50vw, 33vw"
-          className="object-cover object-top"
-          fill
-          priority
-        />
+        {content.photo && (
+          <Image
+            src={content.photo.url || '/test_image.png'}
+            alt={content.photo['alt-text'] || 'Test_image'}
+            sizes="(max-width: 392px) 100vw, (max-width: 768px) 50vw, 33vw"
+            className="object-cover object-top"
+            fill
+            priority
+          />
+        )}
       </div>
 
       <div className="space-y-3">
@@ -41,7 +43,7 @@ const ArticleCard = ({ article }: { article: Article }) => {
         </div>
         <div>
           <HtmlRenderer
-            className="line-clamp-4"
+            className="line-clamp-2"
             html={slateToHtml(content.content, payloadSlateToDomConfig) || ''}
           />
         </div>
