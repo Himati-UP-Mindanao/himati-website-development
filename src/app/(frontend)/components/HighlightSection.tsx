@@ -71,6 +71,7 @@ const HighlightSection = async ({ slug }: { slug: string }) => {
                     alt={highlight.article.photo['alt-text'] || "Test_image"}
                     fill
                     priority
+                    sizes='(max-width: 720px) 100vw, (max-width: 1200px) 50vw, 33vw'
                     className="object-cover object-top"
                   />
                 </div>
