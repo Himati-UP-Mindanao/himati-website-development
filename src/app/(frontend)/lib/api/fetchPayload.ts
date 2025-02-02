@@ -68,6 +68,23 @@ export const getArticles = cache(
   },
 )
 
+export const getArticle = cache(async (id: string) => {
+  const payload = await getPayloadInstance()
+
+  try {
+    const result = await payload.findByID({
+      collection: 'articles',
+      id,
+      depth: 2,
+    })
+
+    return result
+  } catch (error) {
+    console.error(error)
+    notFound()
+  }
+})
+
 export const getCategorizedArticles = cache(async (category: string) => {
   const articles = await getArticles(category)
 
@@ -102,7 +119,7 @@ export const getIssues = cache(async (limit: number = 20) => {
       limit: limit,
     })
 
-    if(!results) throw new Error('No issues found')
+    if (!results) throw new Error('No issues found')
     return results
   } catch (error) {
     console.log(error)
@@ -111,7 +128,7 @@ export const getIssues = cache(async (limit: number = 20) => {
 })
 
 export const getQuickLinks = cache(async () => {
-  const payload = await getPayloadInstance();
+  const payload = await getPayloadInstance()
 
   try {
     const results = await payload.findGlobal({
@@ -138,5 +155,26 @@ export const getScopes = cache(async (category: string) => {
 
   const scopes = [...new Set(docs.map((doc) => doc.scope))]
 
-  return scopes;
+  return scopes
+})
+
+export const getProfilePhoto = cache(async (id: string) => {
+  const payload = await getPayloadInstance()
+
+  try {
+    const result = await payload.find({
+      collection: 'profile-photo',
+      where: {
+        author: {
+          equals: id,
+        },
+      },
+    })
+    console.log(result)
+
+    return result.docs[0]
+  } catch (error) {
+    console.error(error)
+    notFound()
+  }
 })

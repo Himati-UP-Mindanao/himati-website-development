@@ -38,7 +38,7 @@ const HighlightSection = async ({ slug }: { slug: string }) => {
     <>
       {content && (
         <div className="grid md:grid-cols-3 gap-9 py-6">
-          <Link href='#' className="md:col-span-2 space-y-3 hover:scale-[103%] hover:cursor-pointer group transition-all duration-200">
+          <Link href={`${content[0].article.category}/${content[0].article.scope}/${content[0].article.id}`} className="md:col-span-2 space-y-3 hover:scale-[103%] hover:cursor-pointer group transition-all duration-200">
             {/* Image Holder */}
             <div className="aspect-video w-full relative">
               <Image
@@ -64,7 +64,7 @@ const HighlightSection = async ({ slug }: { slug: string }) => {
 
           <div className="md:flex md:flex-col md:gap-6">
             {content.slice(1).map((highlight, index) => (
-              <Link href='#' key={index} className="space-y-3 group hover:scale-105 transition-all duration-200">
+              <Link href={`${highlight.article.category}/${highlight.article.scope}/${highlight.article.id}`} key={index} className="space-y-3 group hover:scale-105 transition-all duration-200">
                 {/* Image holder */}
                 <div className="w-full aspect-video relative">
                   <Image

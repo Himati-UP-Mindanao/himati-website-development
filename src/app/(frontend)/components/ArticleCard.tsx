@@ -19,7 +19,7 @@ const ArticleCard = ({ article }: { article: Article }) => {
   }
 
   return (
-    <Link href='#' className="space-y-3 group hover:scale-105 transition-all duration-200">
+    <Link href={`/${content.category}/${content.scope}/${content.id}`} className="space-y-3 group hover:scale-105 transition-all duration-200">
       {/* Image holder */}
       <div className="aspect-video relative bg-neutral-900">
         {content.photo && (
