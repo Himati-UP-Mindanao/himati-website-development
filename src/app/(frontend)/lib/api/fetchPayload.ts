@@ -1,5 +1,5 @@
 import { cache } from 'react'
-import { BasePayload, getPayload } from 'payload'
+import { BasePayload, getPayload, Where } from 'payload'
 import config from '@payload-config'
 import { notFound } from 'next/navigation'
 
@@ -38,7 +38,7 @@ export const getArticles = cache(
   async (category: string, scope: string | null = null, limit: number = 25) => {
     const payload = await getPayloadInstance()
 
-    const conditions: any[] = [
+    const conditions: Where[] = [
       {
         category: {
           equals: category,
@@ -102,9 +102,26 @@ export const getIssues = cache(async (limit: number = 20) => {
       limit: limit,
     })
 
+    if(!results) throw new Error('No issues found')
     return results
   } catch (error) {
     console.log(error)
     notFound()
+  }
+})
+
+export const getQuickLinks = cache(async () => {
+  const payload = await getPayloadInstance();
+
+  try {
+    const results = await payload.findGlobal({
+      slug: 'quick-links',
+      depth: 1,
+    })
+
+    return results.links
+  } catch (error) {
+    console.error(error)
+    return null
   }
 })
