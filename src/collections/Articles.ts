@@ -1,18 +1,17 @@
-import { APIError, type CollectionConfig } from "payload";
-import { slateEditor } from "@payloadcms/richtext-slate";
-import { v4 as uuidv4 } from "uuid";
-import { superAdmin } from "@/access/admin";
-import { editor } from "@/access/editor";
-import { writer } from "@/access/writer";
-import { selfWrittenOrEditor } from "@/access/selfWrittenOrEditor";
-import { published } from "@/access/published";
-import { canReadArticle } from "@/access/canReadArticle";
-
+import { APIError, type CollectionConfig } from 'payload'
+import { slateEditor } from '@payloadcms/richtext-slate'
+import { v4 as uuidv4 } from 'uuid'
+import { superAdmin } from '@/access/admin'
+import { editor } from '@/access/editor'
+import { writer } from '@/access/writer'
+import { selfWrittenOrEditor } from '@/access/selfWrittenOrEditor'
+import { published } from '@/access/published'
+import { canReadArticle } from '@/access/canReadArticle'
 
 const Articles: CollectionConfig = {
-  slug: "articles",
+  slug: 'articles',
   admin: {
-    useAsTitle: "title",
+    useAsTitle: 'title',
   },
   access: {
     create: writer,
@@ -27,23 +26,23 @@ const Articles: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ data, req, originalDoc }) => {
-        const isPublishing = data._status === "published";
-        const wasDraft = originalDoc?._status === "draft";
-        const isEditor = req.user?.role.includes("editor");
+        const isPublishing = data._status === 'published'
+        const wasDraft = originalDoc?._status === 'draft'
+        const isEditor = req.user?.role.includes('editor')
 
         // Access control so that only editors can publish articles
         if ((isPublishing && Object.keys(originalDoc).length === 0) || (isPublishing && wasDraft)) {
           if (!isEditor) {
-            throw new APIError("You must be an editor to publish articles", 403, undefined, true);
+            throw new APIError('You must be an editor to publish articles', 403, undefined, true)
           }
-        } 
+        }
       },
     ],
   },
   fields: [
     {
-      name: "id",
-      type: "text",
+      name: 'id',
+      type: 'text',
       access: {
         update: () => false,
       },
@@ -55,16 +54,16 @@ const Articles: CollectionConfig = {
       },
     },
     {
-      name: "title",
-      label: "Title",
-      type: "text",
+      name: 'title',
+      label: 'Title',
+      type: 'text',
       required: true,
     },
     {
-      name: "author",
-      label: "Author",
-      type: "relationship",
-      relationTo: "himati-users",
+      name: 'author',
+      label: 'Author',
+      type: 'relationship',
+      relationTo: 'himati-users',
       required: true,
       defaultValue: ({ user }) => user!.id,
       access: {
@@ -73,102 +72,102 @@ const Articles: CollectionConfig = {
       },
     },
     {
-      name: "content",
-      label: "Content",
-      type: "richText",
+      name: 'content',
+      label: 'Content',
+      type: 'richText',
       required: true,
       editor: slateEditor({
         admin: {
           elements: [
-            "h1",
-            "h2",
-            "h3",
-            "h4",
-            "h5",
-            "h6",
-            "blockquote",
-            "ul",
-            "ol",
-            "indent",
-            "link",
-            "relationship",
-            "textAlign",
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'blockquote',
+            'ul',
+            'ol',
+            'indent',
+            'link',
+            'relationship',
+            'textAlign',
           ],
         },
       }),
     },
     {
-      name: "include-featured-photo",
-      label: "Include Featured Photo?",
-      type: "checkbox",
+      name: 'include-featured-photo',
+      label: 'Include Featured Photo?',
+      type: 'checkbox',
       defaultValue: false,
       admin: {
-        position: "sidebar",
-      }
+        position: 'sidebar',
+      },
     },
     {
-      name: "photo",
-      type: "upload",
-      relationTo: "featured-photo",
+      name: 'photo',
+      type: 'upload',
+      relationTo: 'featured-photo',
       required: true,
       admin: {
         condition: (data) => {
-          return data["include-featured-photo"];
+          return data['include-featured-photo']
         },
-        position: "sidebar",
+        position: 'sidebar',
       },
     },
     {
-      name: "category",
-      label: "Category",
-      type: "radio",
+      name: 'category',
+      label: 'Category',
+      type: 'radio',
       required: true,
       admin: {
-        position: "sidebar",
+        position: 'sidebar',
       },
       options: [
         {
-          label: "News",
-          value: "news",
+          label: 'News',
+          value: 'news',
         },
         {
-          label: "Features",
-          value: "features",
+          label: 'Features',
+          value: 'features',
         },
         {
-          label: "Kultura",
-          value: "kultura",
+          label: 'Kultura',
+          value: 'kultura',
         },
         {
-          label: "Opinion",
-          value: "opinion",
+          label: 'Opinion',
+          value: 'opinion',
         },
       ],
     },
     {
-      name: "scope",
-      label: "Scope",
-      type: "radio",
+      name: 'scope',
+      label: 'Scope',
+      type: 'radio',
       required: true,
       admin: {
-        position: "sidebar",
+        position: 'sidebar',
       },
       options: [
         {
-          label: "University",
-          value: "university",
+          label: 'University',
+          value: 'university',
         },
         {
-          label: "Local",
-          value: "local",
+          label: 'Local',
+          value: 'local',
         },
         {
-          label: "National",
-          value: "national",
+          label: 'National',
+          value: 'national',
         },
       ],
     },
   ],
-};
+}
 
-export default Articles;
+export default Articles
