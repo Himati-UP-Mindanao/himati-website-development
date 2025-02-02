@@ -35,7 +35,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
       <ArticleSection slug={slug} />
 
       {/* Issues Section */}
-      <IssueSection slug={slug} />
+      <IssueSection />
     </main>
   )
 }
