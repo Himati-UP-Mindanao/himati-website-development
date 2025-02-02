@@ -5,17 +5,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import HimatiIcon from '@/assets/himati-icon.svg'
+import { QuickLink } from '@/payload-types'
 
-const DesktopHeader = () => {
-  const navLinks = [
-    { label: 'HOME', href: '/' },
-    { label: 'NEWS', href: '/news' },
-    { label: 'FEATURES', href: '/features' },
-    { label: 'KULTURA', href: '/kultura' },
-    { label: 'OPINION', href: '/opinion' },
-    { label: 'ABOUT US', href: '/about' },
-  ]
-
+const DesktopHeader = ({ links }: { links: QuickLink['links'] }) => {
   return (
     <header className="hidden font-acronym md:block">
       <div className="bg-[radial-gradient(circle,#CA0808_0%,#810404_61%)] items-center flex justify-center relative">
@@ -44,15 +36,16 @@ const DesktopHeader = () => {
           </div>
 
           <nav className="mt-1 flex items-center gap-16">
-            {navLinks.map(({ label, href }) => (
-              <Link
-                key={href}
-                href={href}
-                className="text-base font-semibold text-white transition-colors duration-300 hover:text-gray-300"
-              >
-                {label}
-              </Link>
-            ))}
+            {links &&
+              links.map((link) => (
+                <Link
+                  key={link.id}
+                  href={link.url}
+                  className="text-base font-semibold text-white transition-colors duration-300 hover:text-gray-300"
+                >
+                  {link.title.toUpperCase()}
+                </Link>
+              ))}
 
             {/* <div className="border-1 ml-4 flex items-center rounded-full border-black bg-white p-2">
               <input

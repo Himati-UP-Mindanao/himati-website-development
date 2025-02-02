@@ -118,10 +118,25 @@ export const getQuickLinks = cache(async () => {
       slug: 'quick-links',
       depth: 1,
     })
+    if (!results) throw new Error('No quick links found')
 
     return results.links
   } catch (error) {
     console.error(error)
     return null
   }
+})
+
+export const getScopes = cache(async (category: string) => {
+  const articles = await getArticles(category)
+
+  if (!articles) {
+    return null
+  }
+
+  const { docs } = articles
+
+  const scopes = [...new Set(docs.map((doc) => doc.scope))]
+
+  return scopes;
 })
