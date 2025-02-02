@@ -12,7 +12,6 @@ const page = async ({ params }: { params: Promise<{ scope: string; slug: string 
   if (!res) return null
 
   const { docs } = res
-  console.log(docs)
 
   return (
     <main className="px-8 py-2 lg:py-32 max-w-screen-xl mx-auto font-acronym space-y-16">
