@@ -3,7 +3,7 @@ import HighlightSection from '../../components/HighlightSection'
 import ArticleSection from '../../components/ArticleSection'
 import IssueSection from '../../components/IssueSection'
 
-export const revalidate = 1800 // 30 minutes
+export const revalidate =  900 // 15 minutes
 
 export const dynamicParams = false;
 
