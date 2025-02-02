@@ -1,12 +1,14 @@
 import React from 'react'
-import { getCategorizedArticles } from '../lib/api/fetchPayload'
 import ArticleCard from './ArticleCard';
 import Link from 'next/link';
+import { Article } from '@/payload-types';
 
-const ArticleSection = async ({ slug }: { slug: string }) => {
-  const articles = await getCategorizedArticles(slug);
+interface ArticleSectionProps {
+  scope: string;
+  articles: Article[];
+}
 
-  if (!articles) return null;
+const ArticleSection = async ({ slug, articles }:  { slug: string, articles: ArticleSectionProps[]} ) => {
 
   return (
     <>

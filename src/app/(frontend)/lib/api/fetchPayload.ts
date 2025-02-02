@@ -35,20 +35,27 @@ export const getPage = cache(async (pageName: string, depth?: number) => {
 })
 
 export const getArticles = cache(
-  async (category: string, scope: string | null = null, limit: number = 25) => {
+  async (category?: string, scope?: string, limit: number = 25) => {
     const payload = await getPayloadInstance()
 
-    const conditions: Where[] = [
-      {
+    const conditions: Where[] = []
+
+    if (category) {
+      conditions.push({
         category: {
           equals: category,
         },
-      },
-    ]
+      })
+    }
 
     if (scope) {
-      conditions.push({ scope: { equals: scope } })
+      conditions.push({
+        scope: {
+          equals: scope,
+        },
+      })
     }
+
     try {
       const results = await payload.find({
         collection: 'articles',
@@ -170,7 +177,6 @@ export const getProfilePhoto = cache(async (id: string) => {
         },
       },
     })
-    console.log(result)
 
     return result.docs[0]
   } catch (error) {

@@ -1,15 +1,10 @@
-import { Article, FeaturedPhoto, HimatiUser } from '@/payload-types'
+import { Article, FeaturedPhoto, HimatiUser, Page } from '@/payload-types'
 import Image from 'next/image'
 import React from 'react'
 import { getUserFullName } from '../lib/utils'
-import { getPage } from '../lib/api/fetchPayload'
 import Link from 'next/link'
 
-const HighlightSection = async ({ slug }: { slug: string }) => {
-  const pageContent = await getPage(slug, 2);
-
-  const layout = pageContent.docs[0]?.layout;
-
+const HighlightSection = async ({ layout }: { layout: Page['layout']  }) => {
   if (!layout || !layout.length) return null
 
   const highlights = layout.find(

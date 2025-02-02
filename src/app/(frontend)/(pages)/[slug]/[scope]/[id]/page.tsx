@@ -1,10 +1,22 @@
 import HtmlRenderer from '@/app/(frontend)/components/HtmlRenderer'
-import { getArticle, getProfilePhoto } from '@/app/(frontend)/lib/api/fetchPayload'
+import { getArticle, getArticles, getProfilePhoto } from '@/app/(frontend)/lib/api/fetchPayload'
 import { getUserFullName } from '@/app/(frontend)/lib/utils'
 import { FeaturedPhoto, HimatiUser } from '@/payload-types'
 import Image from 'next/image'
 import React from 'react'
 import { payloadSlateToDomConfig, slateToHtml } from 'slate-serializers'
+
+export const revalidate = 900 // 15 minutes
+
+export const dynamicParams = true;
+
+export const generateStaticParams = async () => {
+  const articles = await getArticles()
+  
+  return articles.docs.map((article) => ({
+    id: String(article.id),
+  }))
+}
 
 const IndividualPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params
@@ -31,7 +43,6 @@ const IndividualPage = async ({ params }: { params: Promise<{ id: string }> }) =
   }
 
   const member_photo = await getProfilePhoto(content.author.id!)
-  console.log(member_photo)
 
   return (
     <main className="px-8 py-2 lg:py-12 max-w-screen-xl mx-auto font-acronym lg:space-y-12">
