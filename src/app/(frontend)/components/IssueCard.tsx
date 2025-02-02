@@ -1,5 +1,6 @@
 import { FeaturedPhoto, Issue } from '@/payload-types'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 const IssueCard = ({ issue }: { issue: Issue }) => {
@@ -9,7 +10,7 @@ const IssueCard = ({ issue }: { issue: Issue }) => {
   }
 
   return (
-    <div className="space-y-3">
+    <Link href="#" className="space-y-3 group hover:scale-105 transition-all duration-200">
       <div className="relative aspect-[3/4]">
         <Image
           src={cleaned_issue['cover-photo'].url || ''}
@@ -20,8 +21,8 @@ const IssueCard = ({ issue }: { issue: Issue }) => {
           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
         />
       </div>
-      <h2 className="font-bold text-lg">{cleaned_issue.title}</h2>
-    </div>
+      <h2 className="font-bold text-lg group-hover:underline">{cleaned_issue.title}</h2>
+    </Link>
   )
 }
 

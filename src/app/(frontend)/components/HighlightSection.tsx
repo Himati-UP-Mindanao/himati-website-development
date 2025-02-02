@@ -3,6 +3,7 @@ import Image from 'next/image'
 import React from 'react'
 import { getUserFullName } from '../lib/utils'
 import { getPage } from '../lib/api/fetchPayload'
+import Link from 'next/link'
 
 const HighlightSection = async ({ slug }: { slug: string }) => {
   const pageContent = await getPage(slug, 2);
@@ -37,7 +38,7 @@ const HighlightSection = async ({ slug }: { slug: string }) => {
     <>
       {content && (
         <div className="grid md:grid-cols-3 gap-9 py-6">
-          <div className="md:col-span-2 space-y-3">
+          <Link href='#' className="md:col-span-2 space-y-3 hover:scale-[103%] hover:cursor-pointer group transition-all duration-200">
             {/* Image Holder */}
             <div className="aspect-video w-full relative">
               <Image
@@ -51,7 +52,7 @@ const HighlightSection = async ({ slug }: { slug: string }) => {
             </div>
             <div className="space-y-6">
               <div className="space-y-2">
-                <h2 className="md:text-4xl font-bold">{content[0].article.title}</h2>
+                <h2 className="md:text-4xl font-bold group-hover:underline">{content[0].article.title}</h2>
                 <div className="md:flex md:gap-4 text-neutral-600">
                   <p className="font-bold">{getUserFullName(content[0].article.author)}</p>
                   <p>{content[0].article.createdAt}</p>
@@ -59,11 +60,11 @@ const HighlightSection = async ({ slug }: { slug: string }) => {
               </div>
               <p className="text-neutral-900 line-clamp-4">{content[0].previewText}</p>
             </div>
-          </div>
+          </Link>
 
           <div className="md:flex md:flex-col md:gap-6">
             {content.slice(1).map((highlight, index) => (
-              <div key={index} className="space-y-3">
+              <Link href='#' key={index} className="space-y-3 group hover:scale-105 transition-all duration-200">
                 {/* Image holder */}
                 <div className="w-full aspect-video relative">
                   <Image
@@ -76,13 +77,13 @@ const HighlightSection = async ({ slug }: { slug: string }) => {
                   />
                 </div>
                 <div>
-                  <h5 className="font-bold text-xl">{highlight.article.title}</h5>
+                  <h5 className="font-bold text-xl group-hover:underline">{highlight.article.title}</h5>
                   <div className="flex gap-6 text-neutral-600">
                     <p className="font-bold">{getUserFullName(highlight.article.author)}</p>
                     <p>{highlight.article.createdAt}</p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
