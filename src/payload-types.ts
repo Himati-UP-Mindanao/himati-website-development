@@ -122,7 +122,7 @@ export interface Article {
   'include-featured-photo'?: boolean | null;
   photo?: (string | null) | FeaturedPhoto;
   category: 'news' | 'features' | 'kultura' | 'opinion';
-  scope: 'university' | 'Local' | 'national';
+  scope: 'university' | 'local' | 'national';
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
