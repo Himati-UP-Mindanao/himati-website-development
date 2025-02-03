@@ -38,7 +38,13 @@ export const getArticles = cache(
   async (category?: string, scope?: string, limit: number = 25) => {
     const payload = await getPayloadInstance()
 
-    const conditions: Where[] = []
+    const conditions: Where[] = [
+      {
+        _status: {
+          equals: 'published'
+        }
+      }
+    ]
 
     if (category) {
       conditions.push({
