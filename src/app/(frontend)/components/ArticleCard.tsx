@@ -1,7 +1,7 @@
 import React from 'react'
 import { Article, FeaturedPhoto, HimatiUser } from '@/payload-types'
 import Image from 'next/image'
-import { getUserFullName } from '../lib/utils'
+import { getUserFullName } from '../utilities/utils'
 import HtmlRenderer from './HtmlRenderer'
 import { payloadSlateToDomConfig, slateToHtml } from 'slate-serializers'
 import Link from 'next/link'

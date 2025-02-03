@@ -1,4 +1,5 @@
 import { admin, superAdmin } from "@/access/admin";
+import { collectionHooks } from "@/app/(frontend)/utilities/utils";
 import { Carousel } from "@/blocks/Carousel";
 import { EditorChoice } from "@/blocks/EditorChoice";
 import { EditorialBoard } from "@/blocks/EditorialBoard";
@@ -14,6 +15,7 @@ export const Pages: CollectionConfig = {
       return !user.role.includes("super-admin") && !user.role.includes("admin");
     },
   },
+  hooks: collectionHooks,
   access: {
     create: superAdmin,
     read: () => true,

@@ -1,5 +1,5 @@
 import React from 'react'
-import { getIssues } from '../../lib/api/fetchPayload'
+import { getIssues } from '../../api/fetchPayload'
 import { FeaturedPhoto } from '@/payload-types'
 import IssueCard from '../../components/IssueCard'
 

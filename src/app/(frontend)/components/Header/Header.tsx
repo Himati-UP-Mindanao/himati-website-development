@@ -1,5 +1,5 @@
 import React from 'react'
-import { getQuickLinks } from '../../lib/api/fetchPayload'
+import { getQuickLinks } from '../../api/fetchPayload'
 import dynamic from 'next/dynamic'
 
 const MobileHeader = dynamic(() => import('./HeaderMobile'))

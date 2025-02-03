@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { Page } from '@/payload-types'
-import { getPage } from '../../lib/api/fetchPayload'
+import { getPage } from '../../api/fetchPayload'
 import { slateToHtml, payloadSlateToDomConfig  } from 'slate-serializers'
 import HtmlRenderer from '../../components/HtmlRenderer'
 

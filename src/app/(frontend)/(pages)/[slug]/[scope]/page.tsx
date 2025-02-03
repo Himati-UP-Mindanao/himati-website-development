@@ -1,4 +1,4 @@
-import { getArticles } from '@/app/(frontend)/lib/api/fetchPayload'
+import { getArticles } from '@/app/(frontend)/api/fetchPayload'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import React from 'react'
 import ArticleCard from '@/app/(frontend)/components/ArticleCard'

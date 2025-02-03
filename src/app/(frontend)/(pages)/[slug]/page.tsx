@@ -7,7 +7,7 @@ import {
   getIssues,
   getPage,
   getQuickLinks,
-} from '../../lib/api/fetchPayload'
+} from '../../api/fetchPayload'
 
 export const revalidate = 900 // 15 minutes
 

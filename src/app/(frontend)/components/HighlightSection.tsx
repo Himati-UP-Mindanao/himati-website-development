@@ -1,7 +1,7 @@
 import { Article, FeaturedPhoto, HimatiUser, Page } from '@/payload-types'
 import Image from 'next/image'
 import React from 'react'
-import { getUserFullName } from '../lib/utils'
+import { getUserFullName } from '../utilities/utils'
 import Link from 'next/link'
 
 const HighlightSection = async ({ layout }: { layout: Page['layout']  }) => {
