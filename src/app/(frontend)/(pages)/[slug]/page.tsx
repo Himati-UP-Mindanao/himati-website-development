@@ -2,19 +2,9 @@ import React from 'react'
 import HighlightSection from '../../components/HighlightSection'
 import ArticleSection from '../../components/ArticleSection'
 import IssueSection from '../../components/IssueSection'
-import {
-  getCategorizedArticles,
-  getIssues,
-  getPage,
-  getQuickLinks,
-} from '../../api/fetchPayload'
-
-export const revalidate = 900 // 15 minutes
-
-export const dynamicParams = false
+import { getArticles, getIssues, getPage, getQuickLinks } from '../../api/fetchPayload'
 
 export const generateStaticParams = async () => {
-  console.log('Generating static params')
   const valid_slugs = await getQuickLinks()
 
   if (!valid_slugs) return []
@@ -49,7 +39,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
   const [pageData, articles, issues] = await Promise.all([
     getPage(slug, 2),
-    getCategorizedArticles(slug),
+    getArticles(slug),
     getIssues(),
   ])
 
@@ -61,10 +51,10 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
       <HighlightSection layout={layout} />
 
       {/* Articles Sections */}
-      {articles && <ArticleSection slug={slug} articles={articles} />}
+      {articles.docs.length > 0 && <ArticleSection slug={slug} articles={articles.docs} />}
 
       {/* Issues Section */}
-      <IssueSection issues={issues.docs} />
+      {issues.docs.length > 0 && <IssueSection issues={issues.docs} />}
     </main>
   )
 }

@@ -6,12 +6,12 @@ import Image from 'next/image'
 import React from 'react'
 import { payloadSlateToDomConfig, slateToHtml } from 'slate-serializers'
 
-export const revalidate = 900 // 15 minutes
-
 export const dynamicParams = true;
 
 export const generateStaticParams = async () => {
   const articles = await getArticles()
+
+  if(!articles) return []
   
   return articles.docs.map((article) => ({
     id: String(article.id),
