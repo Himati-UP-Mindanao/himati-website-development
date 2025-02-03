@@ -3,6 +3,27 @@ import HighlightSection from '../../components/HighlightSection'
 import ArticleSection from '../../components/ArticleSection'
 import IssueSection from '../../components/IssueSection'
 import { getArticles, getIssues, getPage, getQuickLinks } from '../../api/fetchPayload'
+import { Metadata, ResolvingMetadata } from 'next'
+
+type Props = {
+  params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const slug = (await params).slug
+
+  const previousImages =(await parent)?.openGraph?.images ?? []
+
+  return {
+    title: slug.charAt(0).toUpperCase() + slug.slice(1),
+    openGraph: {
+      images: [...previousImages],
+    }
+  }
+}
 
 export const generateStaticParams = async () => {
   const valid_slugs = await getQuickLinks()
@@ -34,7 +55,7 @@ export const generateStaticParams = async () => {
   }))
 }
 
-const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
+const Page = async ({ params }: Props) => {
   const slug = (await params).slug
 
   const [pageData, articles, issues] = await Promise.all([

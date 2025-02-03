@@ -1,12 +1,35 @@
 import HtmlRenderer from '@/app/(frontend)/components/HtmlRenderer'
 import { getArticle, getArticles, getProfilePhoto } from '@/app/(frontend)/api/fetchPayload'
 import { getUserFullName } from '@/app/(frontend)/utilities/utils'
-import { FeaturedPhoto, HimatiUser } from '@/payload-types'
+import { Article, FeaturedPhoto, HimatiUser } from '@/payload-types'
 import Image from 'next/image'
 import React from 'react'
 import { payloadSlateToDomConfig, slateToHtml } from 'slate-serializers'
+import { ResolvingMetadata } from 'next'
 
-export const dynamicParams = true;
+type Props = { 
+  params: Promise<{ id: string }>
+}
+
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata) {
+  const id = (await params).id
+  const result = await getArticle(id);
+  if (!result) return null
+
+  const article = {
+    ...result,
+    photo: result['include-featured-photo'] ? (result.photo as FeaturedPhoto) : null,
+  }
+
+  const previousImages = (await parent)?.openGraph?.images ?? []
+
+  return {
+    title: article.title,
+    openGraph: {
+      images: [...previousImages, { url: article.photo?.url}],
+    },
+  }
+}
 
 export const generateStaticParams = async () => {
   const articles = await getArticles()

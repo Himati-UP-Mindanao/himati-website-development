@@ -3,8 +3,29 @@ import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import React from 'react'
 import ArticleCard from '@/app/(frontend)/components/ArticleCard'
 import Link from 'next/link'
+import { ResolvingMetadata } from 'next'
 
-const page = async ({ params }: { params: Promise<{ scope: string; slug: string }> }) => {
+type Props = {
+  params: Promise<{ scope: string; slug: string }>
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+) {
+  const scope = (await params).scope
+
+  const previousImages = (await parent)?.openGraph?.images ?? []
+
+  return {
+    title: scope.charAt(0).toUpperCase() + scope.slice(1),
+    openGraph: {
+      images: [...previousImages],
+    },
+  }
+}
+
+const page = async ({ params }: Props) => {
   const category = (await params).slug
   const scope = (await params).scope
 

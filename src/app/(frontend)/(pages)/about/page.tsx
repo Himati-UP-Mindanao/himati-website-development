@@ -5,6 +5,13 @@ import { getPage } from '../../api/fetchPayload'
 import { slateToHtml, payloadSlateToDomConfig  } from 'slate-serializers'
 import HtmlRenderer from '../../components/HtmlRenderer'
 
+export async function generateMetadata() {
+  return {
+    title: 'About',
+    description: 'Official publication of UP Mindanao',
+  }
+}
+
 const About = async () => {
   const results = await getPage('About')
 
