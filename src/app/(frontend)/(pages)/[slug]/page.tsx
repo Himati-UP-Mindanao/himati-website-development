@@ -56,7 +56,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const layout = pageData.docs[0]?.layout
 
   return (
-    <main className="px-8 py-2 lg:py-32 max-w-screen-xl mx-auto font-acronym space-y-16">
+    <main className="px-8 py-2 lg:py-32 max-w-screen-xl mx-auto font-acronym space-y-16 animate-fade-in">
       {/* Highlight Section */}
       <HighlightSection layout={layout} />
 

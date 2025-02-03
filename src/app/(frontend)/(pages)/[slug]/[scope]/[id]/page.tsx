@@ -45,7 +45,7 @@ const IndividualPage = async ({ params }: { params: Promise<{ id: string }> }) =
   const member_photo = await getProfilePhoto(content.author.id!)
 
   return (
-    <main className="px-8 py-2 lg:py-12 max-w-screen-xl mx-auto font-acronym lg:space-y-12">
+    <main className="px-8 py-2 lg:py-12 max-w-screen-xl mx-auto font-acronym lg:space-y-12 animate-fade-in">
       {/* Image */}
       {content.photo && (
         <div className="aspect-video w-full relative">

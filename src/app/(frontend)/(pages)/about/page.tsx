@@ -35,7 +35,7 @@ const About = async () => {
   )
 
   return (
-    <main className="px-8 py-2 lg:py-5 max-w-screen-xl mx-auto font-acronym">
+    <main className="px-8 py-2 lg:py-5 max-w-screen-xl mx-auto font-acronym animate-fade-in">
       <div className='space-y-12 mt-14'>
         {title_para_pair.map((block, index) => (
           <div key={index} className="space-y-8">

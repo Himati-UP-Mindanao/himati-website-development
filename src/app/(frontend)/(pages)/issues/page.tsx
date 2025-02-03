@@ -14,7 +14,7 @@ const IssuePage = async () => {
   }))
 
   return (
-    <main className="px-8 py-2 lg:py-32 max-w-screen-xl mx-auto font-acronym space-y-16">
+    <main className="px-8 py-2 lg:py-32 max-w-screen-xl mx-auto font-acronym space-y-16 animate-fade-in">
       <h1 className='text-4xl font-bold text-negative-900'>Issues</h1>
       <div className='grid md:grid-cols-5 gap-5'>
         {issues.length > 0 && (

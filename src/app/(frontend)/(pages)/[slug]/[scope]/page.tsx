@@ -14,7 +14,7 @@ const page = async ({ params }: { params: Promise<{ scope: string; slug: string 
   const { docs } = res
 
   return (
-    <main className="px-8 py-2 lg:py-32 max-w-screen-xl mx-auto font-acronym space-y-16">
+    <main className="px-8 py-2 lg:py-32 max-w-screen-xl mx-auto font-acronym space-y-16 animate-fade-in">
       <div className="text-4xl font-bold text-negative-900 flex items-center gap-2">
         <Link href={`/${category.toLowerCase()}`} className="hover:underline underline-offset-4">
           {category.charAt(0).toUpperCase() + category.slice(1)}
