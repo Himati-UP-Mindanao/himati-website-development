@@ -1,7 +1,7 @@
 import HtmlRenderer from '@/app/(frontend)/components/HtmlRenderer'
 import { getArticle, getArticles, getProfilePhoto } from '@/app/(frontend)/api/fetchPayload'
 import { getUserFullName } from '@/app/(frontend)/utilities/utils'
-import { Article, FeaturedPhoto, HimatiUser } from '@/payload-types'
+import { FeaturedPhoto, HimatiUser } from '@/payload-types'
 import Image from 'next/image'
 import React from 'react'
 import { payloadSlateToDomConfig, slateToHtml } from 'slate-serializers'
