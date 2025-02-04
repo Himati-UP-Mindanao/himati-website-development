@@ -17,7 +17,7 @@ const IssueSection = async ({ issues }: { issues: Issue[] }) => {
         <>
           <div className="md:flex md:justify-between md:items-center">
             <h2 className="text-xl font-bold text-negative-900">Issues</h2>
-            <Link href="/clean_data" className="hover:underline underline-offset-4">
+            <Link href="/issues" className="hover:underline underline-offset-4">
               View all
             </Link>
           </div>
