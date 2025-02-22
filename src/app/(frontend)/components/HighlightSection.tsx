@@ -1,14 +1,10 @@
-import { Article, FeaturedPhoto, HimatiUser } from '@/payload-types'
+import { Article, FeaturedPhoto, HimatiUser, Page } from '@/payload-types'
 import Image from 'next/image'
 import React from 'react'
-import { getUserFullName } from '../lib/utils'
-import { getPage } from '../lib/api/fetchPayload'
+import { getUserFullName } from '../utilities/utils'
+import Link from 'next/link'
 
-const HighlightSection = async ({ slug }: { slug: string }) => {
-  const pageContent = await getPage(slug, 2);
-
-  const layout = pageContent.docs[0]?.layout;
-
+const HighlightSection = async ({ layout }: { layout: Page['layout']  }) => {
   if (!layout || !layout.length) return null
 
   const highlights = layout.find(
@@ -37,7 +33,7 @@ const HighlightSection = async ({ slug }: { slug: string }) => {
     <>
       {content && (
         <div className="grid md:grid-cols-3 gap-9 py-6">
-          <div className="md:col-span-2 space-y-3">
+          <Link href={`${content[0].article.category}/${content[0].article.scope}/${content[0].article.id}`} className="md:col-span-2 space-y-3 hover:scale-[103%] hover:cursor-pointer group transition-all duration-200">
             {/* Image Holder */}
             <div className="aspect-video w-full relative">
               <Image
@@ -51,7 +47,7 @@ const HighlightSection = async ({ slug }: { slug: string }) => {
             </div>
             <div className="space-y-6">
               <div className="space-y-2">
-                <h2 className="md:text-4xl font-bold">{content[0].article.title}</h2>
+                <h2 className="md:text-4xl font-bold group-hover:underline">{content[0].article.title}</h2>
                 <div className="md:flex md:gap-4 text-neutral-600">
                   <p className="font-bold">{getUserFullName(content[0].article.author)}</p>
                   <p>{content[0].article.createdAt}</p>
@@ -59,11 +55,11 @@ const HighlightSection = async ({ slug }: { slug: string }) => {
               </div>
               <p className="text-neutral-900 line-clamp-4">{content[0].previewText}</p>
             </div>
-          </div>
+          </Link>
 
           <div className="md:flex md:flex-col md:gap-6">
             {content.slice(1).map((highlight, index) => (
-              <div key={index} className="space-y-3">
+              <Link href={`${highlight.article.category}/${highlight.article.scope}/${highlight.article.id}`} key={index} className="space-y-3 group hover:scale-105 transition-all duration-200">
                 {/* Image holder */}
                 <div className="w-full aspect-video relative">
                   <Image
@@ -76,13 +72,13 @@ const HighlightSection = async ({ slug }: { slug: string }) => {
                   />
                 </div>
                 <div>
-                  <h5 className="font-bold text-xl">{highlight.article.title}</h5>
+                  <h5 className="font-bold text-xl group-hover:underline">{highlight.article.title}</h5>
                   <div className="flex gap-6 text-neutral-600">
                     <p className="font-bold">{getUserFullName(highlight.article.author)}</p>
                     <p>{highlight.article.createdAt}</p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

@@ -1,10 +1,31 @@
-import { getArticles } from '@/app/(frontend)/lib/api/fetchPayload'
+import { getArticles } from '@/app/(frontend)/api/fetchPayload'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import React from 'react'
 import ArticleCard from '@/app/(frontend)/components/ArticleCard'
 import Link from 'next/link'
+import { ResolvingMetadata } from 'next'
 
-const page = async ({ params }: { params: Promise<{ scope: string; slug: string }> }) => {
+type Props = {
+  params: Promise<{ scope: string; slug: string }>
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+) {
+  const scope = (await params).scope
+
+  const previousImages = (await parent)?.openGraph?.images ?? []
+
+  return {
+    title: scope.charAt(0).toUpperCase() + scope.slice(1),
+    openGraph: {
+      images: [...previousImages],
+    },
+  }
+}
+
+const page = async ({ params }: Props) => {
   const category = (await params).slug
   const scope = (await params).scope
 
@@ -12,10 +33,9 @@ const page = async ({ params }: { params: Promise<{ scope: string; slug: string 
   if (!res) return null
 
   const { docs } = res
-  console.log(docs)
 
   return (
-    <main className="px-8 py-2 lg:py-32 max-w-screen-xl mx-auto font-acronym space-y-16">
+    <main className="px-8 py-2 lg:py-32 max-w-screen-xl mx-auto font-acronym space-y-16 animate-fade-in">
       <div className="text-4xl font-bold text-negative-900 flex items-center gap-2">
         <Link href={`/${category.toLowerCase()}`} className="hover:underline underline-offset-4">
           {category.charAt(0).toUpperCase() + category.slice(1)}

@@ -8,10 +8,9 @@ import Image from 'next/image'
 import HimatiIcon from '@/assets/himati-icon.svg'
 import Link from 'next/link'
 import { useState } from 'react'
+import { QuickLink } from '@/payload-types'
 
-const LINKS = ['HOME', 'NEWS', 'FEATURES', 'CULTURES', 'OPINION', 'PAMATI', 'ABOUT']
-
-const MobileHeader = () => {
+const MobileHeader = ({ links }: {links: QuickLink['links']}) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleMenu = () => {
@@ -50,9 +49,9 @@ const MobileHeader = () => {
           </div>
 
           <ul className="flex flex-col justify-center text-white font-bold">
-            {LINKS.map((link, index) => (
-              <li key={index} className="border-b border-white px-8 py-4">
-                <Link href="/">{link}</Link>
+            {links && links.map((link) => (
+              <li key={link.id} className="border-b border-white px-8 py-4">
+                <Link href={link.url}>{link.title.toUpperCase()}</Link>
               </li>
             ))}
           </ul>

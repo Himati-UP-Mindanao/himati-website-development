@@ -1,9 +1,16 @@
 import React from 'react'
 import Image from 'next/image'
 import { Page } from '@/payload-types'
-import { getPage } from '../../lib/api/fetchPayload'
+import { getPage } from '../../api/fetchPayload'
 import { slateToHtml, payloadSlateToDomConfig  } from 'slate-serializers'
 import HtmlRenderer from '../../components/HtmlRenderer'
+
+export async function generateMetadata() {
+  return {
+    title: 'About',
+    description: 'Official publication of UP Mindanao',
+  }
+}
 
 const About = async () => {
   const results = await getPage('About')
@@ -35,7 +42,7 @@ const About = async () => {
   )
 
   return (
-    <main className="px-8 py-2 lg:py-5 max-w-screen-xl mx-auto font-acronym">
+    <main className="px-8 py-2 lg:py-5 max-w-screen-xl mx-auto font-acronym animate-fade-in">
       <div className='space-y-12 mt-14'>
         {title_para_pair.map((block, index) => (
           <div key={index} className="space-y-8">

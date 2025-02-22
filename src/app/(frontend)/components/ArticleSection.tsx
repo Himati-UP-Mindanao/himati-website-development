@@ -1,24 +1,36 @@
 import React from 'react'
-import { getCategorizedArticles } from '../lib/api/fetchPayload'
-import ArticleCard from './ArticleCard';
-import Link from 'next/link';
+import ArticleCard from './ArticleCard'
+import Link from 'next/link'
+import { Article } from '@/payload-types'
+import { getScopes } from '../api/fetchPayload'
 
-const ArticleSection = async ({ slug }: { slug: string }) => {
-  const articles = await getCategorizedArticles(slug);
+const ArticleSection = async ({ slug, articles }: { slug: string; articles: Article[] }) => {
+  const scopes = await getScopes(slug)
+  if (!scopes) return null
 
-  if (!articles) return null;
+  const categorizedArticles = scopes.map((scope) => ({
+    scope: scope,
+    articles: articles
+      .filter((article) => article.scope.toLowerCase() === scope.toLowerCase())
+      .slice(0, 3),
+  }))
 
   return (
     <>
-      {articles.map((article, index) => (
+      {categorizedArticles.map((item, index) => (
         <div key={index} className="space-y-12">
           {/* Title and View all button */}
           <div className="md:flex md:justify-between md:items-center">
-            <h2 className="text-xl font-bold text-negative-900">{article.scope}</h2>
-            <Link  href={`${slug}/${article.scope.toLowerCase()}`} className='hover:underline underline-offset-4'>View all</Link>
+            <h2 className="text-xl font-bold text-negative-900">{item.scope}</h2>
+            <Link
+              href={`${slug}/${item.scope.toLowerCase()}`}
+              className="hover:underline underline-offset-4"
+            >
+              View all
+            </Link>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
-            {article.articles.map((article, index) => (
+            {item.articles.map((article, index) => (
               <ArticleCard key={index} article={article} />
             ))}
           </div>

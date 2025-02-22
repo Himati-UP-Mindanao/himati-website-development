@@ -1,5 +1,6 @@
 import { admin, superAdmin } from "@/access/admin";
 import { editor } from "@/access/editor";
+import { collectionHooks } from "@/app/(frontend)/utilities/utils";
 import type { CollectionConfig, Field } from "payload";
 
 export const Issues: CollectionConfig = {
@@ -8,6 +9,7 @@ export const Issues: CollectionConfig = {
     singular: "Issue",
     plural: "Issues",
   },
+  hooks: collectionHooks,
   admin: {
     useAsTitle: "title",
     hidden({user}) {

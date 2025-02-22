@@ -1,9 +1,10 @@
 import React from 'react'
 import { Article, FeaturedPhoto, HimatiUser } from '@/payload-types'
 import Image from 'next/image'
-import { getUserFullName } from '../lib/utils'
+import { getUserFullName } from '../utilities/utils'
 import HtmlRenderer from './HtmlRenderer'
 import { payloadSlateToDomConfig, slateToHtml } from 'slate-serializers'
+import Link from 'next/link'
 
 const ArticleCard = ({ article }: { article: Article }) => {
   const content = {
@@ -18,7 +19,7 @@ const ArticleCard = ({ article }: { article: Article }) => {
   }
 
   return (
-    <div className="space-y-3">
+    <Link href={`/${content.category}/${content.scope}/${content.id}`} className="space-y-3 group hover:scale-105 transition-all duration-200">
       {/* Image holder */}
       <div className="aspect-video relative bg-neutral-900">
         {content.photo && (
@@ -35,7 +36,7 @@ const ArticleCard = ({ article }: { article: Article }) => {
 
       <div className="space-y-3">
         <div className="space-y-1">
-          <h5 className="font-bold text-xl">{article.title}</h5>
+          <h5 className="font-bold text-xl group-hover:underline">{article.title}</h5>
           <div className="flex gap-6 text-neutral-600">
             <p className="font-bold"> {getUserFullName(content.author)}</p>
             <p>{content.createdAt}</p>
@@ -48,7 +49,7 @@ const ArticleCard = ({ article }: { article: Article }) => {
           />
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 

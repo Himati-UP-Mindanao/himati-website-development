@@ -1,7 +1,8 @@
 import type { Access } from 'payload';
 
 interface ArticleReadVisibility {
-  [key: string]: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any; 
   _status?: { equals: 'published' | 'draft' };
   author?: { equals: string | null };
   or?: ArticleReadVisibility[];

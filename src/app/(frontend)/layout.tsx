@@ -5,7 +5,10 @@ import './globals.css'
 import Footer from './components/Footer/Footer'
 
 export const metadata: Metadata = {
-  title: 'Himati',
+  title: {
+    default: 'Himati',
+    template: '%s | Himati'
+  },
   description: 'Official publication of UP Mindanao',
 }
 

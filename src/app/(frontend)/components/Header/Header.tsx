@@ -1,16 +1,19 @@
-import React from 'react';
+import React from 'react'
+import { getQuickLinks } from '../../api/fetchPayload'
+import dynamic from 'next/dynamic'
 
-// import DesktopHeader from './DesktopHeader';
-import MobileHeader from './HeaderMobile';
-import DesktopHeader from './DesktopHeader';
+const MobileHeader = dynamic(() => import('./HeaderMobile'))
+const DesktopHeader = dynamic(() => import('./DesktopHeader'))
 
-const Header = () => {
+const Header = async () => {
+  const links = await getQuickLinks()
+
   return (
     <>
-      <DesktopHeader />
-      <MobileHeader />
+      <DesktopHeader links={links} />
+      <MobileHeader links={links} />
     </>
-  );
-};
+  )
+}
 
 export default Header;

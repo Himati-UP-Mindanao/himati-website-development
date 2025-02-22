@@ -5,8 +5,8 @@ import { superAdmin } from '@/access/admin'
 import { editor } from '@/access/editor'
 import { writer } from '@/access/writer'
 import { selfWrittenOrEditor } from '@/access/selfWrittenOrEditor'
-import { published } from '@/access/published'
 import { canReadArticle } from '@/access/canReadArticle'
+import { collectionHooks } from '@/app/(frontend)/utilities/utils'
 
 const Articles: CollectionConfig = {
   slug: 'articles',
@@ -38,6 +38,7 @@ const Articles: CollectionConfig = {
         }
       },
     ],
+    ...collectionHooks,
   },
   fields: [
     {
