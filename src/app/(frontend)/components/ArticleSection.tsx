@@ -19,6 +19,7 @@ const ArticleSection = async ({ slug, articles }: { slug: string; articles: Arti
     <>
       {categorizedArticles.map((item, index) => (
         <div key={index} className="space-y-12">
+          <h1>Hello</h1>
           {/* Title and View all button */}
           <div className="md:flex md:justify-between md:items-center">
             <h2 className="text-xl font-bold text-negative-900">{item.scope}</h2>

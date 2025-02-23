@@ -1,16 +1,28 @@
-import Image from "next/image";
+import Image from 'next/image'
+import { getPage } from './api/fetchPayload'
+import { Page } from '@/payload-types'
 
+export default async function Home() {
+  const results = await getPage('Home', 2)
 
-export default function Home() {
-  
+  const layouts = results.docs[0].layout as unknown as NonNullable<Page['layout']>
+
+  console.log(layouts[0].slides[0].tag)
+  console.log(layouts[0].slides[0].article.title)
+  console.log(layouts[0].slides[0].article.author['first-name'])
+  console.log(layouts[0].slides[0].article.author['last-name'])
+  console.log(layouts[0].slides[0].article.createdAt)
+  console.log(layouts[0].slides[0]['preview-text'])
+  console.log(layouts[0].slides[0].article.photo.url)
+
   return (
-    <div className="bg-black w-screen h-screen flex justify-center items-center text-white">
-      <Image src="/logo/himati-logo.png" alt="Himati Logo" height={150} width={150}/>
-      <div className="border h-40 ml-10 mr-10"></div>
-      <div>
-        <p className="font-bold text-2xl mb-2">Website Under Construction</p>
-        <p>Stay tuned!</p>
-      </div>
-    </div>
-  );
+    <>
+      <Image
+        src={layouts[0].slides[0].article.photo.url}
+        width={500}
+        height={500}
+        alt="Picture of the author"
+      />
+    </>
+  )
 }
