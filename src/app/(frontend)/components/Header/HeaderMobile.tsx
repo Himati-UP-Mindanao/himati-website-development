@@ -19,7 +19,7 @@ const MobileHeader = ({ links }: {links: QuickLink['links']}) => {
   }
 
   return (
-    <header className="font-acronym md:hidden">
+    <header className="font-acronym lg:hidden">
       <div className="flex flex-col items-center px-8 bg-[radial-gradient(circle,#CA0808_0%,#810404_61%)] py-2 relative">
         <div
           className="absolute  h-full inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.2)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.2)_1px,transparent_1px)] bg-[length:16px_16px]"

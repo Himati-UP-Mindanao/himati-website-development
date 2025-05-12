@@ -8,7 +8,7 @@ import { QuickLink } from '@/payload-types'
 
 const DesktopHeader = ({ links }: { links: QuickLink['links'] }) => {
   return (
-    <header className="hidden font-acronym md:block">
+    <header className="hidden font-acronym lg:block">
       <div className="bg-[radial-gradient(circle,#CA0808_0%,#810404_61%)] items-center flex justify-center relative">
         <div
           className="absolute  h-full inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.2)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.2)_1px,transparent_1px)] bg-[length:32px_32px]"
