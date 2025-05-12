@@ -15,6 +15,10 @@ export async function generateMetadata() {
 const About = async () => {
   const results = await getPage('About')
 
+  if (results.docs.length === 0) {
+    return <div>Something went wrong</div>
+  }
+
   const layouts = results.docs[0].layout as unknown as NonNullable<Page['layout']>
 
   const getPosition = (position: string) => {
