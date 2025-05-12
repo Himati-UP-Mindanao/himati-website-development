@@ -54,7 +54,7 @@ const About = async () => {
                 html={slateToHtml(block.title, payloadSlateToDomConfig) || ''}
               />
               <HtmlRenderer
-                className="py-[10xp] space-y-2 lg:space-y-8 text-xs leading-[140%]"
+                className="py-[10xp] space-y-2 lg:space-y-8 text-xs lg:text-base leading-[140%]"
                 html={slateToHtml(block.paragraph, payloadSlateToDomConfig) || ''}
               />
             </div>
