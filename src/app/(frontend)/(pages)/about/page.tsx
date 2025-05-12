@@ -50,11 +50,11 @@ const About = async () => {
           {title_para_pair.map((block, index) => (
             <div key={index} className="space-y-2 lg:space-y-8">
               <HtmlRenderer
-                className={`text-center py-[10px] text-xl ${index === 0 ? 'lg:text-5xl' : 'lg:text-3xl'} font-bold ${index === 0 ? 'text-negative-800' : ''}`}
+                className={`text-center py-[10px] text-xl ${index === 0 ? 'md:text-3xl lg:text-5xl' : 'md:text-2xl lg:text-3xl'} font-bold ${index === 0 ? 'text-negative-800' : ''}`}
                 html={slateToHtml(block.title, payloadSlateToDomConfig) || ''}
               />
               <HtmlRenderer
-                className="py-[10xp] space-y-2 lg:space-y-8 text-xs lg:text-base leading-[140%]"
+                className="py-[10xp] space-y-2 lg:space-y-8 text-xs md:text-sm lg:text-base leading-[140%]"
                 html={slateToHtml(block.paragraph, payloadSlateToDomConfig) || ''}
               />
             </div>
@@ -64,15 +64,15 @@ const About = async () => {
 
       {editorial_board && editorial_board.members && editorial_board.members.length > 0 && (
         <div className="mt-4 lg:mt-14">
-          <h1 className="text-center font-bold text-xl lg:text-5xl text-negative-800 lg:py-3">
+          <h1 className="text-center font-bold text-xl md:text-3xl lg:text-5xl text-negative-800 lg:py-3">
             {editorial_board!.title}
           </h1>
-          <h3 className="text-center py-3 text-xs lg:text-lg">{editorial_board!.blurb}</h3>
+          <h3 className="text-center py-3 text-xs md:text-base lg:text-lg">{editorial_board!.blurb}</h3>
           <div className="lg:py-11 flex flex-wrap items-center justify-center gap-5 lg:gap-x-6 lg:gap-y-14">
             {editorial_board?.members &&
               editorial_board.members.map((member, index) => (
                 <div key={index}>
-                  <div className="aspect-square w-[150px] lg:w-[250px] mb-2">
+                  <div className="aspect-square w-[150px] md:w-[200px] lg:w-[250px] mb-2">
                     <Image
                       src={
                         typeof member['member-image'] != 'string'
@@ -95,13 +95,13 @@ const About = async () => {
                     />
                   </div>
                   <div className="lg:px-2">
-                    <h5 className="font-bold text-sm lg:text-xl">
+                    <h5 className="font-bold text-sm md:text-base lg:text-xl">
                       {member['member-info']['first-name']} {member['member-info']['last-name']}
                     </h5>
-                    <p className="font-guardian font-medium text-neutral-900 text-xs lg:text-base">
+                    <p className="font-guardian font-medium text-neutral-900 text-xs md:text-sm lg:text-base">
                       {getPosition(member['member-info']['position'])}
                     </p>
-                    <p className="font-guardian text-[10px] lg:text-sm">{member['degree-program']}</p>
+                    <p className="font-guardian text-[10px] md:text-xs lg:text-sm">{member['degree-program']}</p>
                   </div>
                 </div>
               ))}
