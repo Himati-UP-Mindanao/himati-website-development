@@ -19,7 +19,7 @@ services:
     volumes:
       - data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}one
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
 
 volumes:
   data:
