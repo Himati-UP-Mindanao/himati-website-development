@@ -17,6 +17,16 @@ export const revalidatePages = async (slug: string) => {
 }
 
 export const collectionHooks = {
-  afterChange: [async ({ collection }) => revalidatePages(collection.slug)],
+  afterChange: [async ({ collection, doc }) => {
+    if (collection.slug === 'pages') {
+      const slug = doc['page-name']?.toLowerCase().replace(/\s+/g, '-')
+      if (slug) {
+        await revalidatePages(slug)
+      }
+    }
+    else {
+      await revalidatePages(collection.slug)
+    }
+  }],
   afterDelete: [async ({ collection }) => revalidatePages(collection.slug)],
 }

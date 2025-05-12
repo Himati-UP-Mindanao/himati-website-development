@@ -1,4 +1,4 @@
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
 
   // Revalidate pages
   revalidateTag(slug)
+  revalidatePath(`/${slug}`);
   console.log("Revalidation triggered");
   return NextResponse.json({ message: "Revalidation triggered", date: Date.now() }, { status: 200, });
 }
