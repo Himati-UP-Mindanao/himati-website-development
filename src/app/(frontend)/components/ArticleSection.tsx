@@ -2,9 +2,16 @@ import React from 'react'
 import ArticleCard from './ArticleCard'
 import Link from 'next/link'
 import { Article } from '@/payload-types'
-import { getScopes } from '../api/fetchPayload'
+import { getArticles, getScopes } from '../api/fetchPayload'
 
-const ArticleSection = async ({ slug, articles }: { slug: string; articles: Article[] }) => {
+const ArticleSection = async ({ slug }: { slug: string }) => {
+  const articlesResponse = await getArticles(slug)
+
+  if (!articlesResponse || articlesResponse.totalDocs === 0) {
+    return null
+  }
+  const articles = articlesResponse.docs as Article[]
+
   const scopes = await getScopes(slug)
   if (!scopes) return null
 
@@ -17,25 +24,29 @@ const ArticleSection = async ({ slug, articles }: { slug: string; articles: Arti
 
   return (
     <>
-      {categorizedArticles.map((item, index) => (
-        <div key={index} className="space-y-12">
-          {/* Title and View all button */}
-          <div className="md:flex md:justify-between md:items-center">
-            <h2 className="text-xl font-bold text-negative-900">{item.scope}</h2>
-            <Link
-              href={`${slug}/${item.scope.toLowerCase()}`}
-              className="hover:underline underline-offset-4"
-            >
-              View all
-            </Link>
+      {categorizedArticles.map((item, index) =>
+        // Check if the articles array is empty
+        item.articles.length === 0 ? null : (
+          // If not, render the section
+          <div key={index} className="space-y-12">
+            {/* Title and View all button */}
+            <div className="md:flex md:justify-between md:items-center">
+              <h2 className="text-xl font-bold text-negative-900">{item.scope}</h2>
+              <Link
+                href={`${slug}/${item.scope.toLowerCase()}`}
+                className="hover:underline underline-offset-4"
+              >
+                View all
+              </Link>
+            </div>
+            <div className="grid md:grid-cols-3 gap-5">
+              {item.articles.map((article, index) => (
+                <ArticleCard key={index} article={article} />
+              ))}
+            </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-5">
-            {item.articles.map((article, index) => (
-              <ArticleCard key={index} article={article} />
-            ))}
-          </div>
-        </div>
-      ))}
+        ),
+      )}
     </>
   )
 }

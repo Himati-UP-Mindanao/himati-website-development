@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import HighlightSection from '../../components/HighlightSection'
 import ArticleSection from '../../components/ArticleSection'
 import IssueSection from '../../components/IssueSection'
-import { getArticles, getIssues, getPage, getQuickLinks } from '../../api/fetchPayload'
+import { getQuickLinks } from '../../api/fetchPayload'
 import { Metadata, ResolvingMetadata } from 'next'
 
 type Props = {
@@ -15,13 +15,13 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const slug = (await params).slug
 
-  const previousImages =(await parent)?.openGraph?.images ?? []
+  const previousImages = (await parent)?.openGraph?.images ?? []
 
   return {
     title: slug.charAt(0).toUpperCase() + slug.slice(1),
     openGraph: {
       images: [...previousImages],
-    }
+    },
   }
 }
 
@@ -58,24 +58,22 @@ export const generateStaticParams = async () => {
 const Page = async ({ params }: Props) => {
   const slug = (await params).slug
 
-  const [pageData, articles, issues] = await Promise.all([
-    getPage(slug, 2),
-    getArticles(slug),
-    getIssues(),
-  ])
-
-  const layout = pageData.docs[0]?.layout
-
   return (
     <main className="px-8 py-2 lg:py-32 max-w-screen-xl mx-auto font-acronym space-y-16 animate-fade-in">
       {/* Highlight Section */}
-      <HighlightSection layout={layout} />
+      <Suspense fallback={<div className="h-96 bg-gray-200 animate-pulse rounded-lg" />}>
+        <HighlightSection slug={slug} />
+      </Suspense>
 
       {/* Articles Sections */}
-      {articles.docs.length > 0 && <ArticleSection slug={slug} articles={articles.docs} />}
+      <Suspense fallback={<div className="h-96 bg-gray-200 animate-pulse rounded-lg" />}>
+        <ArticleSection slug={slug} />
+      </Suspense>
 
       {/* Issues Section */}
-      {issues.docs.length > 0 && <IssueSection issues={issues.docs} />}
+      <Suspense fallback={<div className="h-96 bg-gray-200 animate-pulse rounded-lg" />}>
+        <IssueSection />
+      </Suspense>
     </main>
   )
 }

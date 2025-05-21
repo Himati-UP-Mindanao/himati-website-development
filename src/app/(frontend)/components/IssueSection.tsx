@@ -2,8 +2,17 @@ import React from 'react'
 import { FeaturedPhoto, Issue } from '@/payload-types'
 import IssueCard from './IssueCard'
 import Link from 'next/link'
+import { getIssues } from '../api/fetchPayload'
 
-const IssueSection = async ({ issues }: { issues: Issue[] }) => {
+const IssueSection = async ({ limit } : { limit?: number }) => {
+  const dbResponse = await getIssues();
+
+  if (!dbResponse || dbResponse.totalDocs === 0) {
+    return null
+  }
+
+  const issues = dbResponse.docs as Issue[]
+
   if (!issues || !issues.length) return null;
 
   const clean_data= issues.map((issue) => ({
