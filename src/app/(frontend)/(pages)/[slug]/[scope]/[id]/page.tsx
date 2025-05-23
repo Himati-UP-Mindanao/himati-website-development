@@ -6,14 +6,15 @@ import Image from 'next/image'
 import React from 'react'
 import { payloadSlateToDomConfig, slateToHtml } from 'slate-serializers'
 import { ResolvingMetadata } from 'next'
+import { notFound } from 'next/navigation'
 
-type Props = { 
+type Props = {
   params: Promise<{ id: string }>
 }
 
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata) {
   const id = (await params).id
-  const result = await getArticle(id);
+  const result = await getArticle(id)
   if (!result) return null
 
   const article = {
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
   return {
     title: article.title,
     openGraph: {
-      images: [...previousImages, { url: article.photo?.url}],
+      images: [...previousImages, { url: article.photo?.url }],
     },
   }
 }
@@ -34,8 +35,8 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
 export const generateStaticParams = async () => {
   const articles = await getArticles()
 
-  if(!articles) return []
-  
+  if (!articles) return []
+
   return articles.docs.map((article) => ({
     id: String(article.id),
   }))
@@ -44,6 +45,9 @@ export const generateStaticParams = async () => {
 const IndividualPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params
   const article = await getArticle(id)
+
+  if (!article) notFound()
+  if (article._status === 'draft') notFound()
 
   const content = {
     ...article,
@@ -68,10 +72,10 @@ const IndividualPage = async ({ params }: { params: Promise<{ id: string }> }) =
   const member_photo = await getProfilePhoto(content.author.id!)
 
   return (
-    <main className="px-8 py-2 lg:py-12 max-w-screen-xl mx-auto font-acronym lg:space-y-12 animate-fade-in">
+    <main className="lg:py-12 max-w-screen-xl mx-auto font-acronym lg:space-y-12 animate-fade-in">
       {/* Image */}
       {content.photo && (
-        <div className="aspect-video w-full relative">
+        <div className="aspect-video w-full relative lg:py-2 lg:px-8">
           <Image
             src={content.photo.url || ''}
             alt={content.photo['alt-text'] || content.title}
@@ -83,20 +87,10 @@ const IndividualPage = async ({ params }: { params: Promise<{ id: string }> }) =
         </div>
       )}
       {/* Content */}
-      <div className="grid md:grid-cols-8 gap-5">
-        <div className="md:col-span-2 flex flex-col justify-between">
-          {/* Date info  */}
-          <div className="font-guardian space-y-3">
-            <p>
-              Published on: <br /> {content.createdAt}
-            </p>
-            <p>
-              Updated on: <br /> {content.updatedAt}
-            </p>
-          </div>
-
+      <div className="px-8 py-4 grid md:grid-cols-8 gap-5">
+        <div className="md:col-span-2 order-1 lg:-order-1">
           {/* Author Info */}
-          <div>
+          <div className='flex flex-col items-center gap-2'>
             {/* Profile */}
             <div className="w-20 aspect-square rounded-full relative bg-neutral-600">
               {member_photo && (
@@ -110,15 +104,23 @@ const IndividualPage = async ({ params }: { params: Promise<{ id: string }> }) =
                 />
               )}
             </div>
-            <h3 className='font-bold text-sm font-acronym'>{getUserFullName(content.author)}</h3>
+            <h3 className="font-bold text-sm font-acronym">{getUserFullName(content.author)}</h3>
           </div>
         </div>
 
         {/* Main Content */}
         <div className="md:col-span-6 space-y-5">
-          <h1 className='font-acronym text-4xl font-bold pb-5 border-b-2'>{content.title}</h1>
-          <div className='font-guardian'>
-            <HtmlRenderer className='space-y-5' html={slateToHtml(content.content, payloadSlateToDomConfig) || ''} />
+          <div className="py-2 space-y-2 border-b-2">
+            <h1 className="font-acronym text-xl lg:text-4xl font-bold">
+              {content.title}
+            </h1>
+            <h4 className='text-sm lg:text-base text-neutral-800'>Published {content.createdAt}</h4>
+          </div>
+          <div className="font-guardian py-2 border-b-2 lg:border-none">
+            <HtmlRenderer
+              className="space-y-5"
+              html={slateToHtml(content.content, payloadSlateToDomConfig) || ''}
+            />
           </div>
         </div>
       </div>
