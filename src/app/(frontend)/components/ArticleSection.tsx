@@ -28,10 +28,10 @@ const ArticleSection = async ({ slug }: { slug: string }) => {
         // Check if the articles array is empty
         item.articles.length === 0 ? null : (
           // If not, render the section
-          <div key={index} className="space-y-12">
+          <div key={index} className="space-4 lg:space-y-12">
             {/* Title and View all button */}
-            <div className="md:flex md:justify-between md:items-center">
-              <h2 className="text-xl font-bold text-negative-900">{item.scope}</h2>
+            <div className="flex justify-between items-center">
+              <h2 className="lg:text-xl font-bold text-negative-900 py-3">{item.scope}</h2>
               <Link
                 href={`${slug}/${item.scope.toLowerCase()}`}
                 className="hover:underline underline-offset-4"

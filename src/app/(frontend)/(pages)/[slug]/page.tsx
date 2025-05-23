@@ -59,7 +59,7 @@ const Page = async ({ params }: Props) => {
   const slug = (await params).slug
 
   return (
-    <main className="px-8 py-2 lg:py-32 max-w-screen-xl mx-auto font-acronym space-y-16 animate-fade-in">
+    <main className="lg:px-8 px-6 py-8 lg:py-32 max-w-screen-xl mx-auto font-acronym space-y-6 lg:space-y-16 animate-fade-in">
       {/* Highlight Section */}
       <Suspense fallback={<div className="h-96 bg-gray-200 animate-pulse rounded-lg" />}>
         <HighlightSection slug={slug} />

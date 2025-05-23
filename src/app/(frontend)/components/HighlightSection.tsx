@@ -43,9 +43,10 @@ const HighlightSection = async ({ slug }: { slug: string }) => {
   return (
     <>
       {content && (
-        <section>
-          <h2 className="text-xl font-bold text-negative-900">TOP NEWS</h2>
-          <div className="grid md:grid-cols-3 gap-9 py-6">
+        <section className="space-y-8">
+          <h2 className="lg:text-xl font-bold text-negative-900">TOP NEWS</h2>
+
+          <div className="md:grid md:grid-cols-3 md:gap-9 md:py-6">
             <Link
               href={`${content[0].article.category}/${content[0].article.scope}/${content[0].article.id}`}
               className="md:col-span-2 space-y-3 hover:scale-[103%] hover:cursor-pointer group transition-all duration-200"
@@ -61,12 +62,13 @@ const HighlightSection = async ({ slug }: { slug: string }) => {
                   className="object-cover object-top"
                 />
               </div>
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <h2 className="md:text-4xl font-bold group-hover:underline">
+
+              <div className="lg:space-y-6">
+                <div className="lg:space-y-2">
+                  <h2 className="text-xl md:text-4xl font-bold group-hover:underline">
                     {content[0].article.title}
                   </h2>
-                  <div className="md:flex md:gap-4 text-neutral-600">
+                  <div className="flex gap-4 text-neutral-600">
                     <p className="font-bold">{getUserFullName(content[0].article.author)}</p>
                     <p>{content[0].article.createdAt}</p>
                   </div>
